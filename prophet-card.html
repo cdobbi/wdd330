@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prophet Card</title>
+</head>
+<body>
+    <h1>Prophet Card</h1>
+    <p>Click the button below to display the hidden content from the template element.</p>
+    <button onclick="showContent()">Show hidden content</button>
+    <template id="prophet-card">
+        <section class="card">
+          <h2>Full Name</h2>
+          <p>Birth Date</p>
+          <p>Birth Place</p>
+          <img class="profile" src="profile.jpg" alt="Profile Image" loading="lazy" width="200" height="300">
+        </section>
+    </template>
+
+    <script>
+        async function showContent() {
+            const response = await fetch('prophet-card.json');
+            const data = await response.json();
+            const prophets = data.prophets;
+
+            const template = document.getElementById('prophet-card');
+            const container = document.createElement('div');
+
+            prophets.forEach(prophet => {
+                const clone = template.content.cloneNode(true);
+                clone.querySelector('h2').textContent = `${prophet.name} ${prophet.lastname}`;
+                clone.querySelector('p:nth-of-type(1)').textContent = `Birth Date: ${prophet.birthdate}`;
+                clone.querySelector('p:nth-of-type(2)').textContent = `Birth Place: ${prophet.birthplace}`;
+                clone.querySelector('img').src = prophet.imageurl;
+                clone.querySelector('img').alt = `Profile image of ${prophet.name} ${prophet.lastname}`;
+                container.appendChild(clone);
+            });
+
+            document.body.appendChild(container);
+        }
+    </script>
+</body>
+</html>
