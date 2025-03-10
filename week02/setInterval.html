@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 3em;
+            color: #333;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #aaa;
+        }
+        input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1em;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="countdown">10</h1>
+    <input id="timeInput" type="number" placeholder="Time (s)">
+    <button id="startButton">Start</button>
+    <button id="pauseButton" disabled>Pause</button>
+    <button id="resumeButton" disabled>Resume</button>
+
+    <script>
+        // Get references to the HTML elements
+        const countdownElement = document.getElementById('countdown');
+        const timeInput = document.getElementById('timeInput');
+        const startButton = document.getElementById('startButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const resumeButton = document.getElementById('resumeButton');
+
+        // Variables to store the countdown time and interval ID
+        let timeLeft;
+        let countdownInterval;
+
+        // Function to start the countdown
+        function startCountdown() {
+            // Get the custom starting time from the input
+            timeLeft = parseInt(timeInput.value) || 10;
+            countdownElement.textContent = timeLeft;
+
+            // Disable the start button and enable the pause button
+            startButton.disabled = true;
+            pauseButton.disabled = false;
+            resumeButton.disabled = true;
+
+            // Use setInterval() to decrement the countdown every second
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = timeLeft;
+
+                // If the countdown reaches 0, stop the interval and display a message
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = "Time's up!";
+                    startButton.disabled = false;
+                    pauseButton.disabled = true;
+                    resumeButton.disabled = true;
+                }
+            }, 1000);
+        }
+
+        // Function to pause the countdown
+        function pauseCountdown() {
+            clearInterval(countdownInterval);
+            pauseButton.disabled = true;
+            resumeButton.disabled = false;
+        }
+
+        // Function to resume the countdown
+        function resumeCountdown() {
+            pauseButton.disabled = false;
+            resumeButton.disabled = true;
+
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = "Time's up!";
+                    startButton.disabled = false;
+                    pauseButton.disabled = true;
+                    resumeButton.disabled = true;
+                }
+            }, 1000);
+        }
+
+        // Event listeners for the buttons
+        startButton.addEventListener('click', startCountdown);
+        pauseButton.addEventListener('click', pauseCountdown);
+        resumeButton.addEventListener('click', resumeCountdown);
+    </script>
+</body>
+</html>
