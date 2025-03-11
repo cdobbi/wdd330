@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table Time</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/style.css"> <!-- Ensure this path is correct -->
 </head>
 
 <body>
@@ -15,8 +15,7 @@
         <p class="lead">Please choose an option to continue:</p>
         <div class="row justify-content-center my-4">
             <div class="col-md-4">
-                <button id="organizer-button" class="btn btn-primary btn-block" data-toggle="modal"
-                    data-target="#organizerModal">Organizer</button>
+                <button id="organizer-button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#organizerModal">Organizer</button>
             </div>
             <div class="col-md-4">
                 <a href="exhibitor.html" class="btn btn-secondary btn-block">Exhibitor</a>
@@ -50,10 +49,10 @@
     <script>
         document.getElementById('verify-code').addEventListener('click', function () {
             const code = document.getElementById('organizer-code').value;
-            if (code === 'your-secret-code') { // Replace 'your-secret-code' with the actual code
+            if (code === '12345') { // Replace '12345' with the actual code you want to use
                 alert('Code verified successfully!');
-                // Redirect to another page or perform other actions
-                window.location.href = 'organizer-dashboard.html'; // Replace with the actual URL
+                // Redirect to the organizer.html page
+                window.location.href = 'organizer.html'; // Ensure this file exists in the same directory
             } else {
                 alert('Invalid code. Please try again.');
             }
