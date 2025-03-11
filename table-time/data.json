@@ -1,0 +1,52 @@
+{
+  "shows": [
+    {
+      "name": "Show A",
+      "entries": [
+        { "breedClass": "American Chinchilla - Open" },
+        { "breedClass": "Argente Brun - Open" },
+        { "breedClass": "Blanc de Hotot - Youth" }
+      ]
+    },
+    {
+      "name": "Show B",
+      "entries": [
+        { "breedClass": "American Chinchilla - Open" },
+        { "breedClass": "Argente Brun - Open" },
+        { "breedClass": "Blanc de Hotot - Youth" }
+      ]
+    },
+    {
+      "name": "Show C",
+      "entries": [
+        { "breedClass": "American Chinchilla - Open" },
+        { "breedClass": "Argente Brun - Open" },
+        { "breedClass": "Blanc de Hotot - Youth" }
+      ]
+    },
+    {
+      "name": "Show D",
+      "entries": [
+        { "breedClass": "American Chinchilla - Open" },
+        { "breedClass": "Argente Brun - Open" },
+        { "breedClass": "Blanc de Hotot - Youth" }
+      ]
+    },
+    {
+      "name": "Meat Pens",
+      "entries": [
+        { "breedClass": "Meat Pen 1" },
+        { "breedClass": "Meat Pen 2" },
+        { "breedClass": "Meat Pen 3" }
+      ]
+    },
+    {
+      "name": "Single Fryers",
+      "entries": [
+        { "breedClass": "Single Fryer 1" },
+        { "breedClass": "Single Fryer 2" },
+        { "breedClass": "Single Fryer 3" }
+      ]
+    }
+  ]
+}
