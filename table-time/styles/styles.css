@@ -1,41 +1,41 @@
 body {
     background-color: #f9f9f9;
-}
-
-h1 {
+  }
+  
+  h1 {
     margin-bottom: 20px;
-}
-
-#show-selector {
+  }
+  
+  #show-selector {
     margin-bottom: 20px;
-}
-
-.entry {
+  }
+  
+  .entry {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
-    width: 200px;
+    width: 100%;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.entry input[type="checkbox"] {
+  }
+  
+  .entry input[type="checkbox"] {
     margin-left: 10px;
-}
-
-button {
+  }
+  
+  button {
     display: block;
-    margin: 0 auto;
+    margin: 10px auto;
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-button:hover {
+  }
+  
+  button:hover {
     background-color: #45a049;
-}
+  }

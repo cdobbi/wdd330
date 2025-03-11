@@ -1,14 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const formGroup = document.querySelector("#exhibitor-form .form-group");
+    const checkboxContainer = document.getElementById("checkbox-container");
   
     // Fetch the data from the JSON file
     fetch("breeds.json")
       .then((response) => response.json())
       .then((breedsData) => {
         breedsData.breeds.forEach((breed) => {
+          const colDiv = document.createElement("div");
+          colDiv.className = "col-md-6 mb-3";
+  
+          const cardDiv = document.createElement("div");
+          cardDiv.className = "card";
+  
+          const cardBodyDiv = document.createElement("div");
+          cardBodyDiv.className = "card-body";
+  
+          const cardTitle = document.createElement("h5");
+          cardTitle.className = "card-title";
+          cardTitle.textContent = breed.name;
+  
+          cardBodyDiv.appendChild(cardTitle);
+  
           breed.categories.forEach((category) => {
-            const div = document.createElement("div");
-            div.className = "form-check";
+            const formCheckDiv = document.createElement("div");
+            formCheckDiv.className = "form-check";
   
             const input = document.createElement("input");
             input.className = "form-check-input";
@@ -19,12 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const label = document.createElement("label");
             label.className = "form-check-label";
             label.htmlFor = input.id;
-            label.textContent = `${breed.name}/${category}`;
+            label.textContent = `${breed.name} ${category}`;
   
-            div.appendChild(input);
-            div.appendChild(label);
-            formGroup.appendChild(div);
+            formCheckDiv.appendChild(input);
+            formCheckDiv.appendChild(label);
+            cardBodyDiv.appendChild(formCheckDiv);
           });
+  
+          cardDiv.appendChild(cardBodyDiv);
+          colDiv.appendChild(cardDiv);
+          checkboxContainer.appendChild(colDiv);
         });
       })
       .catch((error) => console.error("Error fetching breeds data:", error));
