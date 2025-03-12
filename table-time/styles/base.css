@@ -56,9 +56,9 @@ h1.bg-secondary {
 }
 
 footer.bg-primary {
-    background-color: #007bff;
+    background-color: #f59b25;
     /* Bootstrap primary color */
-    color: white;
+    color: black;
 }
 
 footer a.text-white {
@@ -83,15 +83,19 @@ footer a.text-white {
     0% {
         transform: translateX(100%);
     }
+
     100% {
         transform: translateX(-100%);
     }
 }
 
 @keyframes hop {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
