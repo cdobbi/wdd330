@@ -56,17 +56,14 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   });
 
-  // Save all lineups to localStorage and clear the lineups
+  // Save all lineups to localStorage
   finishedButton.addEventListener("click", function () {
     localStorage.setItem("showLineups", JSON.stringify(showLineups));
-
-    // Clear the lineups after saving
-    showLineups = {};
-    alert("All lineups saved and cleared. Redirecting to lineup page.");
+    alert("All lineups saved. Redirecting to lineup page.");
     window.location.href = "lineup.html"; // Redirect to the lineup page
   });
 
-  // Print all lineups and clear the lineups
+  // Print all lineups
   printLineupButton.addEventListener("click", function () {
     const lineupData = Object.keys(showLineups)
       .map((category) => {
@@ -86,9 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     newWindow.print();
     newWindow.close();
 
-    // Clear the lineups after printing
-    showLineups = {};
-    alert("All lineups printed and cleared.");
+    alert("All lineups printed.");
   });
 
   // Clear lineup and reset selections
