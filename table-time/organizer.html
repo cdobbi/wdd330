@@ -13,6 +13,14 @@
     <div class="container">
         <h1 class="text-center my-4">Rabbit Show Lineup</h1>
         <div class="form-group text-center">
+            <label for="category">Choose a Category:</label>
+            <select id="category" name="category" class="form-control d-inline-block w-auto mx-2">
+                <option value="Blank Lineup">Blank Lineup</option>
+                <option value="Open">Open</option>
+                <option value="Youth">Youth</option>
+            </select>
+        </div>
+        <div class="form-group text-center">
             <label for="show">Choose a Show:</label>
             <select id="show" name="show" class="form-control d-inline-block w-auto mx-2">
                 <option value="Show A">Show A</option>
@@ -20,6 +28,7 @@
                 <option value="Show C">Show C</option>
                 <option value="Show D">Show D</option>
                 <option value="Meat Pens">Meat Pens</option>
+                <option value="Show Auto">Auto Populate</option>
             </select>
         </div>
         <div id="lineup" class="row justify-content-center">
