@@ -48,3 +48,15 @@ button:hover {
 .form-check-label {
     font-size: 1.10rem;
 }
+
+h1.bg-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+}
+footer.bg-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
+footer a.text-white {
+    color: white;
+}

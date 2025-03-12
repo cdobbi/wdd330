@@ -46,3 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Display the lineup on page load
   displayLineup();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const printButton = document.getElementById("print");
+  
+    printButton.addEventListener("click", function () {
+      window.print();
+    });
+  });
