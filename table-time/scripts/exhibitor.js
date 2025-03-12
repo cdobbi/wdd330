@@ -1,17 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const categorySelect = document.getElementById("category");
-  const showSelect = document.getElementById("show");
   const breedOptionsContainer = document.getElementById("breed-options");
+  const saveEntriesButton = document.getElementById("save-entries");
 
   // Fetch the data from the JSON file
   fetch("data/data.json")
     .then((response) => response.json())
     .then((data) => {
-      // Populate breed options based on selected category and show
+      // Populate breed options
       function populateBreedOptions() {
-        const selectedCategory = categorySelect.value;
-        const selectedShow = showSelect.value;
-
         // Clear existing breed options
         breedOptionsContainer.innerHTML = "";
 
@@ -37,12 +33,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-      // Event listeners for category and show selection
-      categorySelect.addEventListener("change", populateBreedOptions);
-      showSelect.addEventListener("change", populateBreedOptions);
-
       // Initial population of breed options
       populateBreedOptions();
     })
     .catch((error) => console.error("Error fetching data:", error));
+
+  // Event listener for the "Start Application" button
+  saveEntriesButton.addEventListener("click", function () {
+    const selectedBreeds = [];
+    const checkboxes = breedOptionsContainer.querySelectorAll(
+      "input[type=checkbox]"
+    );
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedBreeds.push(checkbox.value);
+      }
+    });
+
+    const entries = {
+      breeds: selectedBreeds,
+    };
+
+    // Save entries to localStorage
+    localStorage.setItem("exhibitorEntries", JSON.stringify(entries));
+
+    // Show alert box
+    alert(
+      "Your entries have been saved and the application has started. You will be notified when you need to bring a rabbit to the judge's table."
+    );
+  });
 });

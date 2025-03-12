@@ -76,7 +76,7 @@ footer a.text-white {
 
 .rabbit-ticker span {
     display: inline-block;
-    animation: hop 1s infinite;
+    /* animation: hop 1s infinite; */
 }
 
 @keyframes ticker {
