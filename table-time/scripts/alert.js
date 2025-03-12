@@ -10,29 +10,21 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   publishDateElement.textContent = now.toLocaleDateString("en-US", options);
 
-  // Fetch lineup data from localStorage or a JSON file
-  const lineupContainer = document.getElementById("lineup-container");
-  const lineupData = JSON.parse(localStorage.getItem("lineupData")) || [];
+  // Function to display notification
+  function displayNotification(breed) {
+    alert(`Alert: Please bring your ${breed} to the judge's table.`);
+  }
 
-  // Populate lineup
-  lineupData.forEach((entry) => {
-    const breedDiv = document.createElement("div");
-    breedDiv.className = "col-md-4 mb-3";
-    breedDiv.innerHTML = `
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">${entry.breed}</h5>
-                    <button class="btn btn-primary alert-button">Send Alert</button>
-                </div>
-            </div>
-        `;
-    lineupContainer.appendChild(breedDiv);
-
-    // Add event listener to the alert button
-    breedDiv
-      .querySelector(".alert-button")
-      .addEventListener("click", function () {
-        alert(`Alert sent to exhibitors for breed: ${entry.breed}`);
-      });
+  // Listen for changes in localStorage
+  window.addEventListener("storage", function (event) {
+    if (event.key === "currentBreed" && event.newValue) {
+      displayNotification(event.newValue);
+    }
   });
+
+  // Initial check for currentBreed in localStorage
+  const currentBreed = localStorage.getItem("currentBreed");
+  if (currentBreed) {
+    displayNotification(currentBreed);
+  }
 });

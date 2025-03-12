@@ -59,4 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
       populateBreedOptions();
     })
     .catch((error) => console.error("Error fetching data:", error));
+  // Add this event listener to each checkbox
+  checkbox.addEventListener("change", function () {
+    if (checkbox.checked) {
+      localStorage.setItem("currentBreed", entry.breed);
+    }
+  });
 });
