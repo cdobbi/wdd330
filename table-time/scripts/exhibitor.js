@@ -50,16 +50,60 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    const entries = {
-      breeds: selectedBreeds,
-    };
+    if (selectedBreeds.length === 0) {
+      // Show error message if no breeds are selected
+      const errorMessage = document.createElement("div");
+      errorMessage.className = "alert alert-danger text-center";
+      errorMessage.style.position = "fixed";
+      errorMessage.style.top = "50%";
+      errorMessage.style.left = "50%";
+      errorMessage.style.transform = "translate(-50%, -50%)";
+      errorMessage.style.zIndex = "1000";
+      errorMessage.innerHTML = `
+                <h4 class="alert-heading">Error!</h4>
+                <p>Please select at least one breed to start the application.</p>
+                <button id="close-error" class="btn btn-primary">Close</button>
+            `;
+      document.body.appendChild(errorMessage);
 
-    // Save entries to localStorage
-    localStorage.setItem("exhibitorEntries", JSON.stringify(entries));
+      // Close error message
+      document
+        .getElementById("close-error")
+        .addEventListener("click", function () {
+          errorMessage.style.display = "none";
+        });
+    } else {
+      const entries = {
+        breeds: selectedBreeds,
+      };
 
-    // Show alert box
-    alert(
-      "Your entries have been saved and the application has started. You will be notified when you need to bring a rabbit to the judge's table."
-    );
+      // Save entries to localStorage
+      localStorage.setItem("exhibitorEntries", JSON.stringify(entries));
+
+      // Show success alert box
+      alert(
+        "Your entries have been saved and the application has started. You will be notified when you need to bring a rabbit to the judge's table."
+      );
+    }
+  });
+
+  // Display welcome alert message
+  const alertMessage = document.createElement("div");
+  alertMessage.className = "alert alert-info text-center";
+  alertMessage.style.position = "fixed";
+  alertMessage.style.top = "50%";
+  alertMessage.style.left = "50%";
+  alertMessage.style.transform = "translate(-50%, -50%)";
+  alertMessage.style.zIndex = "1000";
+  alertMessage.innerHTML = `
+        <h4 class="alert-heading">Hello Exhibitor!</h4>
+        <p>Click on your entered breeds. Good luck today!</p>
+        <button id="close-alert" class="btn btn-primary">Close</button>
+    `;
+  document.body.appendChild(alertMessage);
+
+  // Close welcome alert message
+  document.getElementById("close-alert").addEventListener("click", function () {
+    alertMessage.style.display = "none";
   });
 });
