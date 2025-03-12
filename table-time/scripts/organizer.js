@@ -1,26 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const categorySelect = document.getElementById("category");
-  const showSelect = document.getElementById("show");
   const breedOptionsContainer = document.getElementById("breed-options");
+  const saveEntriesButton = document.getElementById("save-lineup");
+  const clearLineupButton = document.getElementById("clear-lineup");
+  const lineupContainer = document.getElementById("lineup");
+  const printLineupButton = document.getElementById("print-lineup");
 
   // Fetch the data from the JSON file
   fetch("data/data.json")
     .then((response) => response.json())
     .then((data) => {
-      // Populate breed options based on selected category and show
+      // Populate breed options
       function populateBreedOptions() {
-        const selectedCategory = categorySelect.value;
-        const selectedShow = showSelect.value;
-
-        // Retain the current state of checkboxes
-        const currentBreeds = {};
-        const checkboxes = breedOptionsContainer.querySelectorAll(
-          "input[type=checkbox]"
-        );
-        checkboxes.forEach((checkbox) => {
-          currentBreeds[checkbox.id] = checkbox.checked;
-        });
-
         // Clear existing breed options
         breedOptionsContainer.innerHTML = "";
 
@@ -35,11 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
           checkbox.id = entry.breed;
           checkbox.value = entry.breed;
 
-          // Retain the checkbox state
-          if (currentBreeds[checkbox.id]) {
-            checkbox.checked = true;
-          }
-
           const label = document.createElement("label");
           label.className = "form-check-label";
           label.htmlFor = entry.breed;
@@ -48,21 +33,64 @@ document.addEventListener("DOMContentLoaded", function () {
           breedOption.appendChild(checkbox);
           breedOption.appendChild(label);
           breedOptionsContainer.appendChild(breedOption);
+
+          // Add event listener to the checkbox
+          checkbox.addEventListener("change", function () {
+            if (checkbox.checked) {
+              localStorage.setItem("currentBreed", entry.breed);
+            }
+          });
         });
       }
-
-      // Event listeners for category and show selection
-      categorySelect.addEventListener("change", populateBreedOptions);
-      showSelect.addEventListener("change", populateBreedOptions);
 
       // Initial population of breed options
       populateBreedOptions();
     })
     .catch((error) => console.error("Error fetching data:", error));
-  // Add this event listener to each checkbox
-  checkbox.addEventListener("change", function () {
-    if (checkbox.checked) {
-      localStorage.setItem("currentBreed", entry.breed);
-    }
+
+  // Event listener for the "Save Lineup" button
+  saveEntriesButton.addEventListener("click", function () {
+    const selectedBreeds = [];
+    const checkboxes = breedOptionsContainer.querySelectorAll(
+      "input[type=checkbox]"
+    );
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedBreeds.push(checkbox.value);
+      }
+    });
+
+    const entries = {
+      breeds: selectedBreeds,
+    };
+  });
+
+  // Event listener for the "Clear Lineup" button
+  clearLineupButton.addEventListener("click", function () {
+    // Clear the lineup container
+    lineupContainer.innerHTML = "";
+
+    // Clear the relevant data in localStorage
+    localStorage.removeItem("exhibitorEntries");
+    localStorage.removeItem("currentBreed");
+
+    // Uncheck all checkboxes
+    const checkboxes = breedOptionsContainer.querySelectorAll(
+      "input[type=checkbox]"
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+  });
+
+  // Event listener for the "Print Lineup" button
+  printLineupButton.addEventListener("click", function () {
+    const printContent = lineupContainer.innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload();
   });
 });
