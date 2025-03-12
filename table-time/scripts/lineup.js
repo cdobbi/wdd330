@@ -31,8 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedCategory = categorySelect.value;
     const selectedShow = showSelect.value;
 
-    // Save the lineup for the selected show
-    showLineups[selectedShow] = {
+    // Initialize the category in showLineups if it doesn't exist
+    if (!showLineups[selectedCategory]) {
+      showLineups[selectedCategory] = {};
+    }
+
+    // Save the lineup for the selected show under the selected category
+    showLineups[selectedCategory][selectedShow] = {
       category: selectedCategory,
       breeds: [...selectedBreeds],
     };
@@ -47,48 +52,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     alert(
-      `Lineup for Show ${selectedShow} saved. You can now select the next show.`
+      `Lineup for Show ${selectedShow} in ${selectedCategory} category saved. You can now select the next show.`
     );
   });
 
-  // Save all lineups to a text file and clear the lineups
+  // Save all lineups to localStorage and clear the lineups
   finishedButton.addEventListener("click", function () {
-    const lineupData = Object.keys(showLineups)
-      .map((show) => {
-        const lineup = showLineups[show];
-        return `Show: ${show}\nCategory: ${
-          lineup.category
-        }\nBreeds:\n${lineup.breeds
-          .map((breed, index) => `${index + 1}. ${breed}`)
-          .join("\n")}`;
-      })
-      .join("\n\n");
-
-    const blob = new Blob([lineupData], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "lineup.txt";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    localStorage.setItem("showLineups", JSON.stringify(showLineups));
 
     // Clear the lineups after saving
     showLineups = {};
-    alert("All lineups saved and cleared.");
+    alert("All lineups saved and cleared. Redirecting to lineup page.");
+    window.location.href = "lineup.html"; // Redirect to the lineup page
   });
 
   // Print all lineups and clear the lineups
   printLineupButton.addEventListener("click", function () {
     const lineupData = Object.keys(showLineups)
-      .map((show) => {
-        const lineup = showLineups[show];
-        return `Show: ${show}\nCategory: ${
-          lineup.category
-        }\nBreeds:\n${lineup.breeds
-          .map((breed, index) => `${index + 1}. ${breed}`)
-          .join("\n")}`;
+      .map((category) => {
+        return Object.keys(showLineups[category])
+          .map((show) => {
+            const lineup = showLineups[category][show];
+            return `Category: ${category}\nShow: ${show}\nBreeds:\n${lineup.breeds
+              .map((breed, index) => `${index + 1}. ${breed}`)
+              .join("\n")}`;
+          })
+          .join("\n\n");
       })
       .join("\n\n");
 
