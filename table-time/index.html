@@ -43,28 +43,24 @@
             </div>
         </div>
     </div>
-    <footer class="text-center my-4 bg-primary text-white p-1">
+    <footer class="text-center my-4 bg-primary text-white pb-0 mb-0 pt-2 small">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <p>&copy; 2025 Christi Dobbins. All rights reserved.<br>Contact: <a href="mailto:rhinelanderselect@gmail.com" class="text-white">rhinelanderselect@gmail.com</a></p>
+                <p>&copy; 2025 Christi Dobbins. All rights reserved.<br>Published on: <span id="publish-date"></span><br>Contact: <a href="mailto:rhinelanderselect@gmail.com" class="text-white">rhinelanderselect@gmail.com</a></p>
             </div>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- <script>
-        document.getElementById('verify-code').addEventListener('click', function () {
-            const code = document.getElementById('organizer-code').value;
-            if (code === '12345') { // Replace '12345' with the actual code you want to use
-                alert('Code verified successfully!');
-                // Redirect to the organizer.html page
-                window.location.href = 'organizer.html'; // Ensure this file exists in the same directory
-            } else {
-                alert('Invalid code. Please try again.');
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const publishDateElement = document.getElementById("publish-date");
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            publishDateElement.textContent = now.toLocaleDateString('en-US', options);
         });
-    </script> -->
+    </script>
     <script src="scripts/verify.js"></script>
 </body>
 
