@@ -1,35 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const nextButton = document.getElementById("next");
-  const finishedButton = document.getElementById("finished");
+  const saveLineupButton = document.getElementById("save-lineup");
   const printLineupButton = document.getElementById("print-lineup");
   const clearLineupButton = document.getElementById("clear-lineup");
-  const categorySelect = document.getElementById("category");
-  const showSelect = document.getElementById("show");
-  const breedOptionsContainer = document.getElementById("breed-options");
+  const finishedButton = document.getElementById("finished");
 
   let selectedBreeds = [];
-  let showLineups = {};
+  let showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
 
   // Function to update the selected breeds array
-  function updateSelectedBreeds(breed, isChecked) {
-    if (isChecked) {
-      selectedBreeds.push(breed);
-    } else {
-      selectedBreeds = selectedBreeds.filter((b) => b !== breed);
-    }
+  function updateSelectedBreeds() {
+    selectedBreeds = [];
+    const checkboxes = document.querySelectorAll(
+      "#breed-options input[type=checkbox]"
+    );
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedBreeds.push(checkbox.value);
+      }
+    });
   }
 
-  // Event listener for breed checkboxes
-  breedOptionsContainer.addEventListener("change", function (event) {
-    if (event.target.type === "checkbox") {
-      updateSelectedBreeds(event.target.value, event.target.checked);
-    }
-  });
-
-  // Save the lineup for the current show and move to the next show
-  nextButton.addEventListener("click", function () {
-    const selectedCategory = categorySelect.value;
-    const selectedShow = showSelect.value;
+  // Event listener for the "Save Lineup" button
+  saveLineupButton.addEventListener("click", function () {
+    updateSelectedBreeds();
+    const selectedCategory = document.getElementById("category").value;
+    const selectedShow = document.getElementById("show").value;
 
     // Initialize the category in showLineups if it doesn't exist
     if (!showLineups[selectedCategory]) {
@@ -42,28 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
       breeds: [...selectedBreeds],
     };
 
-    // Clear the selected breeds for the next show
-    selectedBreeds = [];
-    const checkboxes = breedOptionsContainer.querySelectorAll(
-      "input[type=checkbox]"
-    );
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+    localStorage.setItem("showLineups", JSON.stringify(showLineups));
 
     alert(
-      `Lineup for Show ${selectedShow} in ${selectedCategory} category saved. You can now select the next show.`
+      `Lineup for Show ${selectedShow} in ${selectedCategory} category saved. Please enter the next show.`
     );
   });
 
-  // Save all lineups to localStorage
-  finishedButton.addEventListener("click", function () {
-    localStorage.setItem("showLineups", JSON.stringify(showLineups));
-    alert("All lineups saved. Redirecting to lineup page.");
-    window.location.href = "lineup.html"; // Redirect to the lineup page
-  });
-
-  // Print all lineups
+  // Event listener for the "Print Lineups" button
   printLineupButton.addEventListener("click", function () {
     const lineupData = Object.keys(showLineups)
       .map((category) => {
@@ -83,19 +64,20 @@ document.addEventListener("DOMContentLoaded", function () {
     newWindow.print();
     newWindow.close();
 
-    alert("All lineups printed.");
+    alert("Lineups printed.");
   });
 
-  // Clear lineup and reset selections
+  // Event listener for the "Finished" button
+  finishedButton.addEventListener("click", function () {
+    localStorage.setItem("showLineups", JSON.stringify(showLineups));
+    alert("All lineups saved. Redirecting to lineup page.");
+    window.location.href = "lineup.html"; // Redirect to the lineup page
+  });
+
+  // Event listener for the "Clear Lineup" button
   clearLineupButton.addEventListener("click", function () {
-    selectedBreeds = [];
     showLineups = {};
-    const checkboxes = breedOptionsContainer.querySelectorAll(
-      "input[type=checkbox]"
-    );
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+    localStorage.removeItem("showLineups");
     alert("All lineups cleared.");
   });
 });
