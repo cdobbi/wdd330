@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const breakButton = document.getElementById("break");
     const lunchButton = document.getElementById("lunch");
   
-    fetch('data.json') // Ensure this path matches your JSON file location
+    fetch('data/data.json') // Ensure this path matches your JSON file location
       .then(response => response.json())
       .then(data => {
         showSelector.addEventListener("change", () => {
