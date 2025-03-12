@@ -1,16 +1,16 @@
 body {
     background-color: #f9f9f9;
-  }
-  
-  h1 {
+}
+
+h1 {
     margin-bottom: 20px;
-  }
-  
-  #show-selector {
+}
+
+#show-selector {
     margin-bottom: 20px;
-  }
-  
-  .entry {
+}
+
+.entry {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
@@ -19,13 +19,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  .entry input[type="checkbox"] {
+}
+
+.entry input[type="checkbox"] {
     margin-left: 10px;
-  }
-  
-  button {
+}
+
+button {
     display: block;
     margin: 10px auto;
     padding: 10px 20px;
@@ -34,8 +34,17 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #45a049;
-  }
+}
+
+.form-check-input {
+    width: 20px;
+    height: 25px;
+}
+
+.form-check-label {
+    font-size: 1.10rem;
+}
