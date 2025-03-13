@@ -49,6 +49,16 @@
     <script src="scripts/exhibitor.js"></script>
     <script src="scripts/pusher.js"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('service-worker.js')
+            .then(function(registration) {
+              console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+              console.log('Service Worker registration failed:', error);
+            });
+        }
+    </script>
 </body>
 
 </html>
