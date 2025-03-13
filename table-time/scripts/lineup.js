@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const printLineupButton = document.getElementById("print-lineup");
   const clearLineupButton = document.getElementById("clear-lineup");
   const finishedButton = document.getElementById("finished");
+  const printButton = document.getElementById("print");
 
   let selectedBreeds = [];
   let showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
@@ -80,4 +81,21 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.removeItem("showLineups");
     alert("All lineups cleared.");
   });
+
+  // Print button functionality
+  printButton.addEventListener("click", function () {
+    window.print();
+  });
+
+  // Display publish date
+  const publishDateElement = document.getElementById("publish-date");
+  const now = new Date();
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  publishDateElement.textContent = now.toLocaleDateString("en-US", options);
 });
