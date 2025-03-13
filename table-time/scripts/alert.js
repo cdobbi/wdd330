@@ -58,10 +58,30 @@ document.addEventListener("DOMContentLoaded", function () {
             registration.pushManager
               .subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: "BOof9myOTsT1d4hX0gUOCizYg93nwztm_4cd5U1cBBOW2x0dRxFym9qjSwSiDSUiRuMncym9qjSwSiDSUiRuMncM4sqEfNEB7vhXNV-tw", // Replace with your actual VAPID public key
+                applicationServerKey:
+                  "BOof9myOTsT1d4hX0gUOCizYg93nwztm_4cd5U1cBBOW2x0dRxFym9qjSwSiDSUiRuMncym9qjSwSiDSUiRuMncM4sqEfNEB7vhXNV-tw", // Replace with your actual VAPID public key
               })
               .then(function (subscription) {
                 console.log("Subscribed to push notifications:", subscription);
+
+                // Send subscription to server
+                fetch("http://localhost:3000/send-notification", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    subscription: subscription,
+                    message: data.message,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log("Notification sent:", data);
+                  })
+                  .catch((error) => {
+                    console.error("Error sending notification:", error);
+                  });
               })
               .catch(function (error) {
                 console.error(
