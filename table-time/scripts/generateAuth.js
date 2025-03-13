@@ -1,24 +1,17 @@
 const crypto = require("crypto");
 
-const appId = "1957068";
-const appKey = "999673f7c045421210be";
-const appSecret = "f38c091aeb07c7e5194a"; // Your app secret
-const timestamp = 1741817567; // Updated timestamp
+const authKey = "999673f7c045421210be";
+const authTimestamp = Math.floor(Date.now() / 1000); // Generates current timestamp
+const authVersion = "1.0";
+const bodyMD5 = "2c99321eeba901356c4c7998da9be9e0";
+const secretKey = "f38c091aeb07c7e5194a"; // Your app's secret key
 
-const body = JSON.stringify({
-  data: '{"message":"hello world"}',
-  name: "my-event",
-  channel: "my-channel",
-});
-
-const bodyMd5 = crypto.createHash("md5").update(body).digest("hex");
-const stringToSign = `POST\n/apps/${appId}/events\nauth_key=${appKey}&auth_timestamp=${timestamp}&auth_version=1.0&body_md5=${bodyMd5}`;
+const stringToSign = `POST\n/apps/1957068/events\nauth_key=${authKey}&auth_timestamp=${authTimestamp}&auth_version=${authVersion}&body_md5=${bodyMD5}`;
 
 const authSignature = crypto
-  .createHmac("sha256", appSecret)
+  .createHmac("sha256", secretKey)
   .update(stringToSign)
   .digest("hex");
 
-console.log("Timestamp:", timestamp);
-console.log("Body MD5:", bodyMd5);
-console.log("Auth Signature:", authSignature);
+console.log(`Auth Signature: ${authSignature}`);
+console.log(`Timestamp: ${authTimestamp}`);
