@@ -1,6 +1,8 @@
 import { showInitialAlert } from "./alertMessages.js";
+import { sendPusherEvent } from "./sendPusherEvent.js";
 
 const authKey = "YOUR_PUSHER_KEY"; // Replace with your actual Pusher key
+const secretKey = "YOUR_PUSHER_SECRET"; // Replace with your actual Pusher secret
 
 document.addEventListener("DOMContentLoaded", function () {
   const lineupContainer = document.getElementById("lineup-container");
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `Alert sent for:\nCategory: ${category}\nShow: ${show}\nBreed: ${breed}`
               );
 
-              // Send event to Pusher
+              // Prepare event data
               const eventData = {
                 name: "my-event",
                 channel: "my-channel",
@@ -51,18 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }),
               };
 
-              fetch("https://api.pusherapp.com/apps/1957068/events", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-Pusher-Key": authKey,
-                  "X-Pusher-Signature": authSignature,
-                  "X-Pusher-Timestamp": authTimestamp,
-                  "X-Pusher-Version": authVersion,
-                },
-                body: JSON.stringify(eventData),
-              })
-                .then((response) => response.json())
+              // Send event using the sendPusherEvent function
+              sendPusherEvent(authKey, secretKey, eventData)
                 .then((data) => {
                   console.log("Event sent successfully:", data);
                 })

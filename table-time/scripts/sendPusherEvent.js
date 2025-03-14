@@ -1,32 +1,45 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Enable pusher logging - don't include this in production
-  Pusher.logToConsole = true;
+import { generateAuth } from "./generateAuth.js";
 
-  var pusher = new Pusher("999673f7c045421210be", {
-    cluster: "us3",
-  });
+/**
+ * Sends an event to Pusher.
+ * @param {string} authKey - Your Pusher app key.
+ * @param {string} secretKey - Your Pusher app secret.
+ * @param {object} eventData - The event data to be sent to Pusher.
+ */
+export async function sendPusherEvent(authKey, secretKey, eventData) {
+  try {
+    // Generate authentication details
+    const { authTimestamp, authSignature } = generateAuth(
+      authKey,
+      secretKey,
+      eventData
+    );
 
-  var channel = pusher.subscribe("my-channel");
-  channel.bind("my-event", function (data) {
-    // Check if the browser supports notifications
-    if ("Notification" in window) {
-      // Request permission to display notifications
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          // Create and display the notification
-          var notification = new Notification("Table Time Alert", {
-            body: data.message,
-            icon: "images/notification-icon.png", // Optional: Add an icon for the notification
-          });
+    // Send the event to Pusher
+    const response = await fetch(
+      "https://api.pusherapp.com/apps/1957068/events",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Pusher-Key": authKey,
+          "X-Pusher-Signature": authSignature,
+          "X-Pusher-Timestamp": authTimestamp,
+          "X-Pusher-Version": "1.0",
+        },
+        body: JSON.stringify(eventData),
+      }
+    );
 
-          // Play a sound
-          var audio = new Audio("sounds/alert.mp3"); // Path to your alert sound file
-          audio.play();
-        }
-      });
-    } else {
-      // Fallback for browsers that do not support notifications
-      alert(data.message);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
-});
+
+    const data = await response.json();
+    console.log("Event sent successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error sending event:", error);
+    throw error;
+  }
+}
