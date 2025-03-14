@@ -48,49 +48,64 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error fetching data:", error));
 
-  // Event listener for the "Save Lineup" button
-  saveEntriesButton.addEventListener("click", function () {
-    const selectedBreeds = [];
-    const checkboxes = breedOptionsContainer.querySelectorAll(
-      "input[type=checkbox]"
-    );
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.checked) {
-        selectedBreeds.push(checkbox.value);
+  // Grouped Event Listeners
+  if (saveEntriesButton) {
+    saveEntriesButton.addEventListener("click", function () {
+      const selectedBreeds = [];
+      const checkboxes = breedOptionsContainer.querySelectorAll(
+        "input[type=checkbox]"
+      );
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          selectedBreeds.push(checkbox.value);
+        }
+      });
+
+      // Save the lineup data to localStorage
+      const lineupData = {
+        breeds: selectedBreeds,
+      };
+      localStorage.setItem("showLineups", JSON.stringify(lineupData));
+
+      alert("Lineup saved successfully!");
+    });
+  }
+
+  if (clearLineupButton) {
+    clearLineupButton.addEventListener("click", function () {
+      // Clear the lineup container
+      if (lineupContainer) {
+        lineupContainer.innerHTML = "";
+      }
+
+      // Clear the relevant data in localStorage
+      localStorage.removeItem("exhibitorEntries");
+      localStorage.removeItem("currentBreed");
+
+      // Uncheck all checkboxes
+      const checkboxes = breedOptionsContainer.querySelectorAll(
+        "input[type=checkbox]"
+      );
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+
+      // Optionally reload the page to ensure everything is cleared
+      window.location.reload();
+    });
+  }
+
+  if (printLineupButton) {
+    printLineupButton.addEventListener("click", function () {
+      if (lineupContainer) {
+        const printContent = lineupContainer.innerHTML;
+        const originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        window.location.reload();
       }
     });
-
-    const entries = {
-      breeds: selectedBreeds,
-    };
-  });
-
-  // Event listener for the "Clear Lineup" button
-  clearLineupButton.addEventListener("click", function () {
-    // Clear the lineup container
-    lineupContainer.innerHTML = "";
-
-    // Clear the relevant data in localStorage
-    localStorage.removeItem("exhibitorEntries");
-    localStorage.removeItem("currentBreed");
-
-    // Uncheck all checkboxes
-    const checkboxes = breedOptionsContainer.querySelectorAll(
-      "input[type=checkbox]"
-    );
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
-  });
-
-  // Event listener for the "Print Lineup" button
-  printLineupButton.addEventListener("click", function () {
-    const printContent = lineupContainer.innerHTML;
-    const originalContent = document.body.innerHTML;
-
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload();
-  });
+  }
 });
