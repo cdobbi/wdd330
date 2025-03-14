@@ -64,8 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     newWindow.document.write(`<pre>${lineupData}</pre>`);
     newWindow.print();
     newWindow.close();
-
-    alert("Lineups printed.");
   });
 
   // Event listener for the "Finished" button
