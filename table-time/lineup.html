@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lineup Display</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <script defer src="scripts/lineup.js"></script>
+</head>
+
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Rabbit Show Lineup</h1>
+
+        <div id="lineupList" class="row">
+            <!-- Dynamic lineups will be displayed here -->
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="button" id="modifyLineupBtn" class="btn btn-secondary">Modify Lineups</button>
+            <button type="button" id="printLineupBtn" class="btn btn-primary">Print Lineups</button>
+            <button type="button" id="beginShowBtn" class="btn btn-success">Begin Show</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
