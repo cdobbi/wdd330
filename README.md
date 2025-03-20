@@ -1,44 +1,81 @@
-<!-- # wdd330Table-Time App
-Organize and manage rabbit shows seamlessly with Table-Time, a web application designed to facilitate both organizers and exhibitors in a user-friendly, efficient manner.
+BYU-Idaho WDD 330 - Web Frontend Development II
+Welcome to the WDD 330 repository, dedicated to exploring and mastering advanced concepts in frontend web development. This course builds on foundational web development skills to help students create modern, responsive, and interactive web applications.
 
-Features
-Login System:
+Course Focus
+The WDD 330: Web Frontend Development II course is designed to teach students how to:
 
-Separate interfaces for organizers and exhibitors.
+Build and manage fully responsive, dynamic web applications.
 
-Secure key-based access for organizers.
+Understand and implement modular code structures using JavaScript ES6+.
 
-Organizer Dashboard:
+Incorporate third-party APIs into projects to enhance functionality.
 
-Set categories, tables, and breeds for the rabbit show.
+Leverage modern JavaScript frameworks or libraries.
 
-Generate and save randomized show lineups.
+Organize and document clean, reusable code.
 
-Print or modify lineups with ease.
+What You'll Learn
+Advanced JavaScript Techniques:
 
-Exhibitor Dashboard:
+Using ES6+ features such as classes, modules, and promises.
 
-Select breeds and wait for alerts when it's time to approach the judges' table.
+Managing client-side state and user interactions dynamically.
 
-Alerts include pop-ups, sound notifications, and real-time updates.
+Frontend Architecture:
 
-Lineup Management:
+Organizing projects into modular file structures.
 
-View all saved lineups in an organized format.
+Following industry standards for clean, maintainable code.
 
-Drag-and-drop functionality to send breed-specific alerts to exhibitors.
+API Integration:
 
-Modern Design:
+Making requests to third-party APIs.
 
-Fully responsive and styled with Bootstrap for a polished look.
+Parsing and displaying JSON data effectively within a UI.
 
-Technologies Used
-Frontend: HTML, CSS, Bootstrap 4
+Interactive and Responsive Design:
 
-Logic: JavaScript (modular and reusable components)
+Enhancing user experience (UX) through CSS frameworks like Bootstrap.
 
-Storage: LocalStorage for saving lineups
+Implementing animations and interactive UI components.
 
-Audio Alerts: JavaScript's Audio API
+Version Control & Collaboration:
 
-Responsive Design: Leveraging Bootstrap grid and components -->
+Using Git and GitHub effectively for project management.
+
+Creating meaningful documentation for projects.
+
+Weekly Topics
+Week 1: Overview and Tools
+Introduction to project setup and GitHub basics.
+
+Importance of modular code and reusable components.
+
+Week 2–4: Advanced JavaScript and ES6+
+Mastering ES6+ features (e.g., arrow functions, destructuring).
+
+Understanding modules and imports for code organization.
+
+Week 5–7: Client-Side API Integration
+Fetching and displaying data from APIs.
+
+Building features that dynamically update based on external data.
+
+Week 8–10: CSS Frameworks and Design Patterns
+Leveraging Bootstrap for quick, responsive UI design.
+
+Enhancing UX with interactivity and animations.
+
+Week 11–13: Capstone Project
+Developing a full, functional web application.
+
+Incorporating all course concepts into a cohesive project.
+
+Projects and Assignments
+This repository will include:
+
+Weekly assignments demonstrating specific concepts (e.g., working with APIs or responsive design).
+
+A capstone project where you design and build a fully functional web app.
+
+Documentation and resources to guide you through each phase of development.
