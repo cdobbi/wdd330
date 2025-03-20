@@ -15,8 +15,19 @@
     <div class="container py-5">
         <h1 class="text-center mb-4">Rabbit Show Lineup</h1>
 
-        <div id="lineupList" class="row">
-            <!-- Dynamic lineups will be displayed here -->
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Available Breeds</h3>
+                <ul id="breedList" class="list-group">
+                    <!-- Dynamically populated breed list -->
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3>Judges' Table</h3>
+                <div id="dropZone" class="border p-4 bg-white rounded shadow-sm">
+                    <p class="text-muted">Drag a breed here to send an alert to the exhibitor.</p>
+                </div>
+            </div>
         </div>
 
         <div class="text-center mt-4">
