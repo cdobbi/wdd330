@@ -72,3 +72,10 @@ document.getElementById('beginShowBtn').addEventListener('click', () => {
 
 // Initial population of breeds
 populateBreeds();
+
+// Handle Back Button functionality
+document.getElementById('backBtn').addEventListener('click', () => {
+    window.history.back(); // Navigate to the previous page
+  });
+  
+  

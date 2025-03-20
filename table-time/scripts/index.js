@@ -5,7 +5,7 @@ document.getElementById('organizerBtn').addEventListener('click', () => {
   
   document.getElementById('proceedBtn').addEventListener('click', () => {
     const key = document.getElementById('organizerKey').value;
-    if (key === "YOUR_SECRET_KEY") {
+    if (key === "Mad Hatter") {
       window.location.href = "organizer.html"; // Redirect to Organizer page
     } else {
       alert("Invalid Key!");
