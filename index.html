@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <title>Welcome to Table Time - Table Time</title>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
+</head>
+
+<body>
+    <div class="container text-center my-5">
+        <h1>Welcome to Table Time!</h1>
+        <p class="lead">Please choose an option to continue:</p>
+        <div class="row justify-content-center my-4 align-items-center">
+            <div class="col-md-4">
+                <button id="organizer-button" class="btn btn-info btn-block" data-toggle="modal"
+                    data-target="#organizerModal">Organizer</button>
+            </div>
+            <div class="col-md-4">
+                <a href="exhibitor.html" class="btn btn-secondary btn-block">Exhibitor</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Organizer Modal -->
+    <div class="modal fade" id="organizerModal" tabindex="-1" role="dialog" aria-labelledby="organizerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="organizerModalLabel">Organizer Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="organizer-code" class="form-control" placeholder="Enter code">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="verify-code">Verify</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-center my-4 bg-primary text-white pb-0 mb-0 pt-2 small">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <p>&copy; 2025 Christi Dobbins. All rights reserved.<br>Published on: <span id="publish-date"></span><br>Contact: <a
+                        href="mailto:rhinelanderselect@gmail.com" class="text-white">rhinelanderselect@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts/verify.js"></script>
+    <script src="scripts/date-time.js"></script>
+    <script src="scripts/pusherScript.js"></script>
+    <script src="scripts/sendPusherEvent.js"></script>
+    <script src="scripts/alert.js"></script>
+    <script src="scripts/service-worker.js"></script>
+    <script src="scripts/registerServiceWorker.js"></script>
+</body>
+
+</html>
