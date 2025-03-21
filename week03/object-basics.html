@@ -1,56 +1,253 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Object basics: Task 1</title>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Meet the Cats!</title>
     <style>
-      p {
-        color: purple;
-        margin: 0.5em 0;
-      }
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://placekitten.com/1600/900') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            overflow-x: hidden;
+        }
 
-      * {
-        box-sizing: border-box;
-      }
+        section.preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 2em;
+            min-height: 100vh;
+        }
+
+        /* Card styles */
+        .card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.1);
+            margin: 1em;
+            padding: 2em;
+            width: 320px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 10px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 0;
+            transform: scale(0);
+            transition: transform 0.4s ease;
+            border-radius: 15px;
+        }
+
+        .card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .card p {
+            margin: 0.5em 0;
+            color: #555;
+            font-size: 1.1em;
+            z-index: 1;
+            position: relative;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 1.8em;
+            color: #333;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* Heading styles */
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-top: 1em;
+            font-size: 2.5em;
+        }
+
+        /* Button styles */
+        .button {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 0.8em 1.5em;
+            font-size: 1em;
+            color: #fff;
+            background: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .button:hover {
+            background: #ff3b2f;
+            transform: scale(1.1);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 2em;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            margin: 0 0 1em;
+        }
+
+        .modal-content p {
+            margin: 0 0 1.5em;
+        }
+
+        .close {
+            background: #ff6f61;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .close:hover {
+            background: #ff3b2f;
+        }
     </style>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
+</head>
 
-  <body>
-
+<body>
+    <h1>Meet the Cats!</h1>
     <section class="preview">
-
-
-
+        <!-- Content will be dynamically added here -->
     </section>
 
-  </body>
-  <script>
-    const cat = {
-      name : 'Bertie',
-      breed : 'Cymric',
-      color : 'white',
-      greeting: function() {
-        console.log('Meow!');
-      }
-    }
-
-    // Add your code here
-
-    const catName = cat.name;
-
-    // Don't edit the code below here!
+    <!-- Modal -->
+    <div class="modal" id="adoptModal">
+        <div class="modal-content">
+            <h2>Adopt a Cat!</h2>
+            <p>Thank you for considering adoption. Bertie is excited to meet you!</p>
+            <button class="close">Close</button>
+        </div>
+    </div>
+</body>
+<script>
+    const cats = [
+        {
+            name: 'Bertie',
+            breed: 'Cymric',
+            color: 'white',
+            age: 3,
+            favoriteFood: 'salmon',
+            greeting: function () {
+                return `Meow! My name is ${this.name}, and I am a ${this.color} ${this.breed}.`;
+            }
+        },
+        {
+            name: 'Mittens',
+            breed: 'Tabby',
+            color: 'brown',
+            age: 2,
+            favoriteFood: 'tuna',
+            greeting: function () {
+                return `Purr! My name is ${this.name}, and I am a ${this.color} ${this.breed}.`;
+            }
+        },
+        {
+            name: 'Whiskers',
+            breed: 'Siamese',
+            color: 'cream',
+            age: 4,
+            favoriteFood: 'chicken',
+            greeting: function () {
+                return `Hiss! My name is ${this.name}, and I am a ${this.color} ${this.breed}.`;
+            }
+        }
+    ];
 
     const section = document.querySelector('section');
+    const modal = document.getElementById('adoptModal');
+    const closeModal = document.querySelector('.close');
 
-    let para1 = document.createElement('p');
-    let para2 = document.createElement('p');
+    cats.forEach(cat => {
+        const card = document.createElement('div');
+        card.classList.add('card');
 
-    para1.textContent = `The cat's name is ${ catName }.`;
-    para2.textContent = `The cat's color is ${ cat.color }.`;
+        const cardTitle = document.createElement('h2');
+        cardTitle.textContent = `${cat.name}'s Profile`;
 
-    section.appendChild(para1);
-    section.appendChild(para2);
-  </script>
+        const para1 = document.createElement('p');
+        para1.textContent = `The cat's name is ${cat.name}.`;
+
+        const para2 = document.createElement('p');
+        para2.textContent = `The cat's color is ${cat.color}.`;
+
+        const para3 = document.createElement('p');
+        para3.textContent = `The cat's favorite food is ${cat.favoriteFood}.`;
+
+        const para4 = document.createElement('p');
+        para4.textContent = cat.greeting();
+
+        const button = document.createElement('a');
+        button.classList.add('button');
+        button.textContent = `Adopt ${cat.name}!`;
+        button.href = '#';
+        button.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        card.appendChild(cardTitle);
+        card.appendChild(para1);
+        card.appendChild(para2);
+        card.appendChild(para3);
+        card.appendChild(para4);
+        card.appendChild(button);
+
+        section.appendChild(card);
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+</script>
 
 </html>
