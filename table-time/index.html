@@ -4,50 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabbit Show Lineup</title>
+    <title>Table-Time Login</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
-    <script type="module" defer src="scripts/lineup.js"></script>
+    <script defer src="scripts/index.js"></script>
 </head>
 
 <body class="bg-light">
-    <div class="container py-5">
-        <!-- Back Button -->
-        <div class="mb-3">
-            <button type="button" id="backBtn" class="btn btn-outline-secondary">
-                <span>&larr;</span> Back
-            </button>
-        </div>
-
-        <h1 class="text-center mb-4">Rabbit Show Lineup</h1>
-
-        <!-- Row for Available Breeds and Drag-and-Drop Zone -->
-        <div class="row">
-            <!-- Available Breeds -->
-            <div class="col-md-6">
-                <h3>Available Breeds</h3>
-                <ul id="breedList" class="list-group">
-                    <li class="list-group-item draggable" draggable="true">Rhinelander</li>
-                    <li class="list-group-item draggable" draggable="true">Dutch</li>
-                    <li class="list-group-item draggable" draggable="true">Mini Rex</li>
-                </ul>
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="card shadow-lg p-4">
+            <h1 class="text-center mb-4">Welcome to Table-Time</h1>
+            <div class="text-center">
+                <button id="organizerBtn" class="btn btn-primary btn-lg mb-3">Organizer</button>
+                <button id="exhibitorBtn" class="btn btn-secondary btn-lg">Exhibitor</button>
             </div>
+        </div>
+    </div>
 
-            <!-- Judges' Table (Drop Zone) -->
-            <div class="col-md-6">
-                <h3>Judges' Table</h3>
-                <div id="dropZone" class="border p-4 bg-white rounded shadow-sm">
-                    <p class="text-muted">Drag a breed here to send an alert to the exhibitor.</p>
+    <!-- Organizer Key Modal -->
+    <div class="modal fade" id="organizerModal" tabindex="-1" aria-labelledby="organizerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="organizerModalLabel">Enter Organizer Key</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="organizerKey" class="form-control" placeholder="Enter Key">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="proceedBtn">Proceed</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="text-center mt-4">
-            <button type="button" id="modifyLineupBtn" class="btn btn-secondary">Modify Lineups</button>
-            <button type="button" id="printLineupBtn" class="btn btn-primary">Print Lineups</button>
-            <button type="button" id="beginShowBtn" class="btn btn-success">Begin Show</button>
         </div>
     </div>
 

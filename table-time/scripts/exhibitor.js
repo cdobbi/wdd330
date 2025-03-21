@@ -1,18 +1,21 @@
 // exhibitor.js
 let savedBreeds = [];
 
+// Save selected breeds
 document.getElementById('saveBreedsBtn').addEventListener('click', () => {
-  const breeds = Array.from(document.getElementById('breedSelect').selectedOptions)
-    .map(option => option.value);
-  if (breeds.length > 0) {
-    savedBreeds = breeds;
-    const saveAlert = document.getElementById('saveAlert');
-    saveAlert.classList.remove('d-none'); // Show alert
-    setTimeout(() => saveAlert.classList.add('d-none'), 3000); // Hide after 3 seconds
-  } else {
-    alert("Please select at least one breed.");
-  }
-});
+    const selectedBreeds = Array.from(
+      document.querySelectorAll('#breedCheckboxes input:checked')
+    ).map(checkbox => checkbox.value);
+  
+    if (selectedBreeds.length > 0) {
+      const saveAlert = document.getElementById('saveAlert');
+      saveAlert.classList.remove('d-none'); // Show alert
+      saveAlert.textContent = `Breeds saved: ${selectedBreeds.join(', ')}`;
+      setTimeout(() => saveAlert.classList.add('d-none'), 3000); // Hide after 3 seconds
+    } else {
+      alert('Please select at least one breed.');
+    }
+  });  
 
 document.getElementById('startAppBtn').addEventListener('click', () => {
   if (savedBreeds.length > 0) {
