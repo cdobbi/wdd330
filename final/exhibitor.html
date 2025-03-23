@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <title>Exhibitor Entries - Table Time</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 <body>
@@ -18,34 +12,27 @@
     <div class="container">
         <h1 class="text-center my-4">Exhibitor's Entries</h1>
         <form id="exhibitor-form">
-    </div>
-    <div id="breed-options" class="row justify-content-center">
-        <!-- Breed options will be displayed here -->
-    </div>
-    <div class="text-center my-4">
-        <button type="button" id="save-entries" class="btn btn-success">Start Application</button>
-    </div>
-    </form>
-    </div>
-    <footer class="text-center my-4 bg-primary text-white pb-0 mb-0 pt-2 small">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <p>&copy; 2025 Christi Dobbins. All rights reserved.<br>Published on: <span id="publish-date"></span><br>Contact: <a
-                        href="mailto:rhinelanderselect@gmail.com" class="text-white">rhinelanderselect@gmail.com</a></p>
+            <div id="breed-options" class="row justify-content-center">
+                <!-- Breed options will be displayed here -->
             </div>
-        </div>
-    </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts/date-time.js"></script>
-    <script src="scripts/service-worker.js"></script>
-    <script src="scripts/exhibitor.js"></script>
-    <script src="scripts/pusher.js"></script>
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script src="scripts/pusherScript.js"></script>
-    <script src="scripts/alert.js"></script>
-    <script src="scripts/registerServiceWorker.js"></script>
+            <div class="text-center my-4 d-flex justify-content-center">
+                <button type="button" id="save-entries" class="btn btn-success mx-2">Start Application</button>
+                <button type="button" id="return-to-login" class="btn btn-danger mx-2">Return to Login</button>
+            </div>
+        </form>
+        <footer class="text-center my-4 bg-primary text-white pb-0 mb-0 pt-2 small">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Christi Dobbins. All rights reserved.<br>Published on: <span id="publish-date"></span><br>Contact: <a
+                            href="mailto:rhinelanderselect@gmail.com" class="text-white">rhinelanderselect@gmail.com</a></p>
+                </div>
+            </div>
+        </footer>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="scripts/date-time.js"></script>
+        <script src="scripts/exhibitor.js"></script>
+        <script src="scripts/alert.js"></script>
+    </div>
 </body>
-
-</html>

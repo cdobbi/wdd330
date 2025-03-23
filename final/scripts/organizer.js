@@ -1,111 +1,63 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const breedOptionsContainer = document.getElementById("breed-options");
-  const saveEntriesButton = document.getElementById("save-lineup");
-  const clearLineupButton = document.getElementById("clear-lineup");
-  const lineupContainer = document.getElementById("lineup");
-  const printLineupButton = document.getElementById("print-lineup");
-
-  // Fetch the data from the JSON file
-  fetch("data/data.json")
-    .then((response) => response.json())
-    .then((data) => {
-      // Populate breed options
-      function populateBreedOptions() {
-        // Clear existing breed options
-        breedOptionsContainer.innerHTML = "";
-
-        // Filter and display breeds
-        data.entries.forEach((entry) => {
-          const breedOption = document.createElement("div");
-          breedOption.className = "form-check form-check-inline";
-
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.className = "form-check-input";
-          checkbox.id = entry.breed;
-          checkbox.value = entry.breed;
-
-          const label = document.createElement("label");
-          label.className = "form-check-label";
-          label.htmlFor = entry.breed;
-          label.textContent = entry.breed;
-
-          breedOption.appendChild(checkbox);
-          breedOption.appendChild(label);
-          breedOptionsContainer.appendChild(breedOption);
-
-          // Add event listener to the checkbox
-          checkbox.addEventListener("change", function () {
-            if (checkbox.checked) {
-              localStorage.setItem("currentBreed", entry.breed);
-            }
+    const saveShowButton = document.getElementById("save-show");
+    const beginShowButton = document.getElementById("begin-show");
+    const breedButtons = document.querySelectorAll(".breed-button");
+    const notificationSound = new Audio("notification.mp3"); // Add your notification sound file here
+  
+    // Save Show
+    if (saveShowButton) {
+      saveShowButton.addEventListener("click", async () => {
+        const category = document.getElementById("category").value;
+        const table = document.getElementById("table").value;
+        const selectedBreeds = Array.from(
+          document.querySelectorAll(".breed-checkbox:checked")
+        ).map((checkbox) => checkbox.value);
+  
+        if (!category || !table || selectedBreeds.length === 0) {
+          alert("Please select a category, table, and at least one breed.");
+          return;
+        }
+  
+        try {
+          const response = await fetch("http://localhost:3000/api/save-show", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ category, table, breeds: selectedBreeds }),
           });
-        });
-      }
-
-      // Initial population of breed options
-      populateBreedOptions();
-    })
-    .catch((error) => console.error("Error fetching data:", error));
-
-  // Grouped Event Listeners
-  if (saveEntriesButton) {
-    saveEntriesButton.addEventListener("click", function () {
-      const selectedBreeds = [];
-      const checkboxes = breedOptionsContainer.querySelectorAll(
-        "input[type=checkbox]"
-      );
-      checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          selectedBreeds.push(checkbox.value);
+          const data = await response.json();
+          alert(`Show saved successfully!\nCategory: ${category}\nTable: ${table}\nBreeds: ${selectedBreeds.join(", ")}`);
+        } catch (error) {
+          console.error("Error saving show:", error);
+          alert("An error occurred while saving the show. Please try again.");
         }
       });
-
-      // Save the lineup data to localStorage
-      const lineupData = {
-        breeds: selectedBreeds,
-      };
-      localStorage.setItem("showLineups", JSON.stringify(lineupData));
-
-      alert("Lineup saved successfully!");
-    });
-  }
-
-  if (clearLineupButton) {
-    clearLineupButton.addEventListener("click", function () {
-      // Clear the lineup container
-      if (lineupContainer) {
-        lineupContainer.innerHTML = "";
-      }
-
-      // Clear the relevant data in localStorage
-      localStorage.removeItem("exhibitorEntries");
-      localStorage.removeItem("currentBreed");
-
-      // Uncheck all checkboxes
-      const checkboxes = breedOptionsContainer.querySelectorAll(
-        "input[type=checkbox]"
-      );
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
+    }
+  
+    // Begin Show
+    if (beginShowButton) {
+      beginShowButton.addEventListener("click", () => {
+        window.location.href = "lineup.html";
       });
-
-      // Optionally reload the page to ensure everything is cleared
-      window.location.reload();
+    }
+  
+    // Notify Exhibitors
+    breedButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const breed = button.dataset.breed;
+  
+        try {
+          const response = await fetch("http://localhost:3000/api/notifications", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ breed }),
+          });
+          const data = await response.json();
+          alert(`Notification sent for breed: ${breed}`);
+          notificationSound.play(); // Play notification sound
+        } catch (error) {
+          console.error("Error sending notification:", error);
+          alert("An error occurred while sending the notification. Please try again.");
+        }
+      });
     });
-  }
-
-  if (printLineupButton) {
-    printLineupButton.addEventListener("click", function () {
-      if (lineupContainer) {
-        const printContent = lineupContainer.innerHTML;
-        const originalContent = document.body.innerHTML;
-
-        document.body.innerHTML = printContent;
-        window.print();
-        document.body.innerHTML = originalContent;
-        window.location.reload();
-      }
-    });
-  }
-});
+  });

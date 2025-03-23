@@ -1,15 +1,22 @@
+/* General Styles */
 body {
     background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
 }
 
 #show-selector {
     margin-bottom: 20px;
 }
 
+/* Entry Styles */
 .entry {
     border: 1px solid #ccc;
     padding: 10px;
@@ -19,12 +26,15 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .entry input[type="checkbox"] {
     margin-left: 10px;
 }
 
+/* Button Styles */
 button {
     display: block;
     margin: 10px auto;
@@ -34,39 +44,73 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
+/* Form Check Styles */
 .form-check-input {
     width: 20px;
     height: 25px;
 }
 
 .form-check-label {
-    font-size: 1.10rem;
+    font-size: 1.1rem;
 }
 
+/* Header Styles */
 h1.bg-secondary {
     background-color: #6c757d;
     /* Bootstrap secondary color */
     color: white;
+    padding: 10px;
+    border-radius: 5px;
 }
 
+/* Footer Styles */
 footer.bg-primary {
     background-color: #f59b25;
-    /* Bootstrap primary color */
+    /* Custom primary color */
     color: black;
+    text-align: center;
+    width: 100%;
 }
 
 footer a.text-white {
     color: white;
+    text-decoration: none;
 }
 
+footer a.text-white:hover {
+    text-decoration: underline;
+}
 
-/* .rabbit-ticker {
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .entry {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    button {
+        width: 90%;
+        font-size: 0.9rem;
+    }
+
+    .form-check-label {
+        font-size: 1rem;
+    }
+}
+
+/* Optional Rabbit Ticker Animation */
+.rabbit-ticker {
     display: flex;
     justify-content: center;
     overflow: hidden;
@@ -76,8 +120,7 @@ footer a.text-white {
 
 .rabbit-ticker span {
     display: inline-block;
-    /* animation: hop 1s infinite; */
-/* }
+}
 
 @keyframes ticker {
     0% {
@@ -89,14 +132,20 @@ footer a.text-white {
     }
 }
 
-@keyframes hop {
+/* Limit the max width for desktop screens */
+.container {
+    max-width: 50%;
+    /* 50% of the desktop screen width */
+    margin: 0 auto;
+    /* Center the container */
+    padding: 20px;
+}
 
-    0%,
-    100% {
-        transform: translateY(0);
+/* Ensure full width for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        /* Full width for mobile and tablet */
+        padding: 10px;
     }
-
-    50% {
-        transform: translateY(-10px);
-    }
-} */
+}
