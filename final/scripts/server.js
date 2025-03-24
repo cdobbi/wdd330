@@ -55,3 +55,8 @@ app.post("/notify", (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+// Add this route to handle GET requests to the root URL
+app.get("/", (req, res) => {
+    res.send("Welcome to the Table Time API!");
+});
