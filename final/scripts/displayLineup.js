@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const lineupContainer = document.getElementById("lineup-container");
+    if (!lineupContainer) {
+        console.error("Error: lineup-container element not found in the DOM.");
+        return; // Exit the script if the element is missing
+    }
+
     const printButton = document.getElementById("print");
 
     // Check if localStorage is available
