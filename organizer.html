@@ -16,6 +16,8 @@
     </div>
     <div class="container">
         <h1 class="text-center my-4">Rabbit Show Lineup</h1>
+
+        <!-- Category Selection -->
         <div class="form-group text-center">
             <label for="category">Choose a Category:</label>
             <select id="category" name="category" class="form-control d-inline-block w-auto mx-2">
@@ -23,6 +25,8 @@
                 <option value="Open">Open</option>
             </select>
         </div>
+
+        <!-- Show Selection -->
         <div class="form-group text-center">
             <label for="show">Choose a Show:</label>
             <select id="show" name="show" class="form-control d-inline-block w-auto mx-2">
@@ -34,22 +38,17 @@
                 <option value="Fur">Fur</option>
             </select>
         </div>
-        <div id="breed-options" class="row justify-content-center">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="breed1" value="Holland Lop">
-                <label class="form-check-label" for="breed1">Holland Lop</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="breed2" value="Netherland Dwarf">
-                <label class="form-check-label" for="breed2">Netherland Dwarf</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="breed3" value="Lionhead">
-                <label class="form-check-label" for="breed3">Lionhead</label>
-            </div>
-            <!-- Add more checkboxes dynamically -->
 
+        <!-- Rabbit Breeds List -->
+        <div id="breed-options" class="row justify-content-center">
+            <ul id="rabbit-list" class="list-group w-100">
+                
+                <!-- Rabbit breeds will be dynamically added here -->
+                <li class="list-group-item text-muted">Loading breeds...</li>
+            </ul>
         </div>
+
+        <!-- Action Buttons -->
         <div class="text-center my-4">
             <button id="save-lineup" class="btn btn-warning mx-2">Save Lineup</button>
             <button id="print-lineup" class="btn btn-info mx-2">Print Lineup</button>
@@ -57,6 +56,8 @@
             <button id="finished" class="btn btn-danger mx-2">Finished</button>
         </div>
     </div>
+
+    <!-- Footer -->
     <footer class="text-center my-4 bg-primary text-white pb-0 mb-0 pt-2 small">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -67,6 +68,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
