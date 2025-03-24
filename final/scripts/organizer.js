@@ -1,23 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
     const saveShowButton = document.getElementById("save-show");
     const beginShowButton = document.getElementById("begin-show");
-    const breedButtons = document.querySelectorAll(".breed-button");
     const rabbitList = document.getElementById("rabbit-list");
-    const notificationSound = new Audio("final/sounds/notification.mp3"); // Ensure this file exists
+    const notificationSound = new Audio("final/sounds/alert.mp3"); // Ensure this file exists
 
     // Fetch Rabbit Breeds from data.json
     fetch("final/data/data.json")
         .then((response) => {
+            console.log("Fetch response:", response);
             if (!response.ok) {
                 throw new Error("Failed to fetch rabbit breeds.");
             }
             return response.json();
         })
         .then((data) => {
-            // Populate the rabbit list dynamically
+            console.log("Fetched data:", data);
             const entries = data.entries;
             rabbitList.innerHTML = ""; // Clear placeholder rabbits
 
+            // Populate the rabbit list dynamically
             entries.forEach((entry) => {
                 const listItem = document.createElement("li");
                 listItem.className = "list-group-item breed-button";
