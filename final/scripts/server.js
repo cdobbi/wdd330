@@ -1,34 +1,33 @@
-let notifications = []; // Store notifications temporarily
-let shows = []; // Store saved shows
+require("dotenv").config();
+const express = require("express");
+const Pusher = require("pusher");
 
-// Endpoint to save a show
-app.post("/api/save-show", (req, res) => {
-  const { category, table, breeds } = req.body;
-  if (!category || !table || !breeds || breeds.length === 0) {
-    return res.status(400).json({ error: "Invalid show data." });
-  }
-  const newShow = { category, table, breeds };
-  shows.push(newShow);
-  res.json({ message: "Show saved successfully!", show: newShow });
+const app = express();
+const port = 3000;
+
+// Configure Pusher
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: process.env.PUSHER_CLUSTER,
+    useTLS: true
 });
 
-// Endpoint to send a notification
-app.post("/api/notifications", (req, res) => {
-  const { breed } = req.body;
-  if (!breed) {
-    return res.status(400).json({ error: "Breed is required." });
-  }
-  notifications.push({ breed });
-  res.json({ message: `Notification for ${breed} sent.` });
+// Middleware to parse JSON
+app.use(express.json());
+
+// Endpoint for the organizer to send notifications
+app.post("/notify", (req, res) => {
+    const { breed } = req.body;
+
+    // Trigger a Pusher event
+    pusher.trigger("table-time", "breed-notification", { breed });
+
+    res.status(200).send("Notification sent!");
 });
 
-// Endpoint to get notifications
-app.get("/api/notifications", (req, res) => {
-  res.json(notifications);
-});
-
-// Endpoint to clear notifications
-app.post("/api/clear-notifications", (req, res) => {
-  notifications = [];
-  res.json({ message: "Notifications cleared." });
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

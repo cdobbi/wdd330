@@ -35,9 +35,19 @@
             </select>
         </div>
         <div id="breed-options" class="row justify-content-center">
-            <!-- Breed options will be displayed here -->
-
-
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="breed1" value="Holland Lop">
+                <label class="form-check-label" for="breed1">Holland Lop</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="breed2" value="Netherland Dwarf">
+                <label class="form-check-label" for="breed2">Netherland Dwarf</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="breed3" value="Lionhead">
+                <label class="form-check-label" for="breed3">Lionhead</label>
+            </div>
+            <!-- Add more checkboxes dynamically -->
         </div>
         <div class="text-center my-4">
             <button id="save-lineup" class="btn btn-warning mx-2">Save Lineup</button>
@@ -63,6 +73,7 @@
     <script src="scripts/lineup.js"></script>
     <script src="scripts/displayLineup.js"></script>
     <script src="scripts/date-time.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 </body>
 
 </html>

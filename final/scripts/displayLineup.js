@@ -67,4 +67,5 @@ document.addEventListener("DOMContentLoaded", function () {
     printButton.addEventListener("click", function () {
       window.print();
     });
-  });
+});
+  

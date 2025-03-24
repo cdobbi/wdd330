@@ -1,78 +1,85 @@
+
+import "./pusherNotifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     const breedOptionsContainer = document.getElementById("breed-options");
     const saveEntriesButton = document.getElementById("save-entries");
-  
+    const returnToLoginButton = document.getElementById("return-to-login");
+
     // Fetch the data from the JSON file
     fetch("data/data.json")
-      .then((response) => response.json())
-      .then((data) => {
-        // Populate breed options
-        data.entries.forEach((entry) => {
-          const breedOption = document.createElement("div");
-          breedOption.className = "form-check form-check-inline";
-  
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.className = "form-check-input";
-          checkbox.id = entry.breed;
-          checkbox.value = entry.breed;
-  
-          const label = document.createElement("label");
-          label.className = "form-check-label";
-          label.htmlFor = entry.breed;
-          label.textContent = entry.breed;
-  
-          breedOption.appendChild(checkbox);
-          breedOption.appendChild(label);
-          breedOptionsContainer.appendChild(breedOption);
-        });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  
+        .then((response) => response.json())
+        .then((data) => {
+            // Populate breed options as buttons
+            data.entries.forEach((entry) => {
+                const breedButton = document.createElement("button");
+                breedButton.className = "breed-button";
+                breedButton.textContent = entry.breed;
+
+                // Add click event to toggle selection
+                breedButton.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent page reload
+                    breedButton.classList.toggle("selected"); // Toggle the selected class
+                });
+
+                breedOptionsContainer.appendChild(breedButton);
+            });
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+
     // Event listener for the "Start Application" button
     saveEntriesButton.addEventListener("click", function () {
-      const selectedBreeds = [];
-      const checkboxes = breedOptionsContainer.querySelectorAll(
-        "input[type=checkbox]"
-      );
-      checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          selectedBreeds.push(checkbox.value);
-        }
-      });
-  
-      if (selectedBreeds.length === 0) {
-        alert("Please select at least one breed to start the application.");
-      } else {
-        const entries = { breeds: selectedBreeds };
-        localStorage.setItem("exhibitorEntries", JSON.stringify(entries));
-        alert(
-          "Your entries have been saved. You will be notified when your breed is called."
-        );
-      }
-    });
-  
-    // Poll for notifications
-    async function checkForNotifications() {
-      try {
-        const response = await fetch("http://localhost:3000/api/notifications");
-        const notifications = await response.json();
-        const exhibitorEntries = JSON.parse(
-          localStorage.getItem("exhibitorEntries")
-        );
-  
-        notifications.forEach((notification) => {
-          if (exhibitorEntries.breeds.includes(notification.breed)) {
-            alert(`Your breed (${notification.breed}) is up next!`);
-            const notificationSound = new Audio("sounds/alert.mp3");
-            notificationSound.play();
-          }
+        const selectedBreeds = [];
+        const selectedButtons = breedOptionsContainer.querySelectorAll(".breed-button.selected");
+
+        selectedButtons.forEach((button) => {
+            selectedBreeds.push(button.textContent);
         });
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
+
+        if (selectedBreeds.length === 0) {
+            alert("Please select at least one breed to start the application.");
+        } else {
+            const entries = { breeds: selectedBreeds };
+            localStorage.setItem("exhibitorEntries", JSON.stringify(entries));
+            alert("Your entries have been saved. You will be notified when your breed is called.");
+        }
+    });
+
+    async function checkForNotifications() {
+        try {
+            // Mocked notifications data
+            const notifications = [
+                { breed: "Holland Lop" },
+                { breed: "Netherland Dwarf" }
+            ];
+    
+            // Retrieve exhibitor entries from localStorage
+            const exhibitorEntries = JSON.parse(localStorage.getItem("exhibitorEntries"));
+    
+            // Check if any notification matches the selected breeds
+            notifications.forEach((notification) => {
+                if (exhibitorEntries && exhibitorEntries.breeds.includes(notification.breed)) {
+                    alert(`Your breed (${notification.breed}) is up next!`);
+                    const notificationSound = new Audio("sounds/alert.mp3");
+                    notificationSound.play();
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
     }
-  
+
     // Poll every 5 seconds
     setInterval(checkForNotifications, 5000);
-  });
+});
+
+const pusher = new Pusher("your_key", {
+    cluster: "your_cluster"
+});
+
+const channel = pusher.subscribe("table-time");
+channel.bind("breed-notification", (data) => {
+    alert(`Your breed (${data.breed}) is up next!`);
+    const notificationSound = new Audio("sounds/alert.mp3");
+    notificationSound.play();
+});

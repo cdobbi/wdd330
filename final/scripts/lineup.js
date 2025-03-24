@@ -69,4 +69,5 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("All lineups saved. Redirecting to lineup page.");
       window.location.href = "lineup.html";
     });
-  });
+});
+  
