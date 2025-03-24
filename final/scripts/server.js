@@ -60,6 +60,7 @@ app.get("/api/notifications", (req, res) => {
     res.json(notifications);
 });
 
+app.use(express.static("c:/Users/UtahH/OneDrive - BYU-Idaho/School/wdd330"));
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
