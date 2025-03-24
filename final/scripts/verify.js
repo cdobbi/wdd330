@@ -12,8 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const code = document.getElementById("organizer-code").value;
 
         try {
-            // Replace with your backend API URL
-            const response = await fetch("https://your-backend-service.com/verify-code", {
+            const response = await fetch("https://wdd330-owtb.onrender.com/verify-code", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
