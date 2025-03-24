@@ -1,7 +1,10 @@
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { json } from "express";
 import Pusher from "pusher";
 import cors from "cors";
+
 
 const app = express();
 const port = 3000;
