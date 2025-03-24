@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const notificationSound = new Audio("final/sounds/alert.mp3"); // Ensure this file exists
 
     // Fetch Rabbit Breeds from data.json
-    fetch("final/data/data.json")
+    fetch("../final/data/data.json")
         .then((response) => {
             console.log("Fetch response:", response);
             if (!response.ok) {
