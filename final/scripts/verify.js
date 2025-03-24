@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
 
                 if (result.valid) {
-                    // Redirect to lineup.html if the code is valid
-                    window.location.href = "lineup.html";
+                    // Redirect to organizer.html if the code is valid
+                    window.location.href = "organizer.html";
                 } else {
                     // Show an error message if the code is invalid
                     alert("Invalid code. Please try again.");
