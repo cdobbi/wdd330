@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error fetching notifications:", error);
         }
     }
-  
-    // Poll the backend every 15 seconds (adjust for production)
+      // Poll the backend every 15 seconds (adjust for production)
     setInterval(checkForNotifications, 15000);
 });

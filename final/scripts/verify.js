@@ -1,42 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const organizerButton = document.getElementById("organizer-button");
-    const exhibitorButton = document.getElementById("exhibitor-button");
-    const verifyCodeButton = document.getElementById("verify-code");
+document.addEventListener("DOMContentLoaded", function () {
+    const verifyButton = document.getElementById("verify-code");
 
-    organizerButton.addEventListener("click", () => {
-        // Show the modal for code verification
-        $("#organizerModal").modal("show");
-    });
+    if (verifyButton) {
+        verifyButton.addEventListener("click", async function () {
+            const organizerCode = document.getElementById("organizer-code").value;
 
-    verifyCodeButton.addEventListener("click", async () => {
-        const code = document.getElementById("organizer-code").value;
+            try {
+                // Send the organizer code to the server for verification
+                const response = await fetch("http://localhost:3000/verify-code", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code: organizerCode }),
+                });
 
-        try {
-            const response = await fetch("https://wdd330-owtb.onrender.com/verify-code", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ code }),
-            });
+                const result = await response.json();
 
-            const result = await response.json();
-
-            if (result.valid) {
-                $("#organizerModal").modal("hide");
-                alert("Code verified successfully.");
-                window.location.href = "organizer.html";
-            } else {
-                alert("Incorrect code. Please try again.");
+                if (result.valid) {
+                    // Redirect to lineup.html if the code is valid
+                    window.location.href = "lineup.html";
+                } else {
+                    // Show an error message if the code is invalid
+                    alert("Invalid code. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error verifying code:", error);
+                alert("An error occurred while verifying the code. Please try again.");
             }
-        } catch (error) {
-            console.error("Error verifying code:", error);
-            alert("An error occurred while verifying the code. Please try again.");
-        }
-    });
-
-    exhibitorButton.addEventListener("click", () => {
-        // Redirect to exhibitor page or perform any action
-        window.location.href = "exhibitor.html";
-    });
+        });
+    } else {
+        console.warn("Verify button not found in the DOM.");
+    }
 });

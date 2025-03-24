@@ -5,7 +5,6 @@ import express, { json } from "express";
 import Pusher from "pusher";
 import cors from "cors";
 
-
 const app = express();
 const port = 3000;
 
@@ -49,6 +48,16 @@ app.post("/notify", (req, res) => {
         console.error("Error triggering Pusher event:", error);
         res.status(500).send("Internal Server Error");
     }
+});
+
+// Add this route to handle GET requests to /api/notifications
+app.get("/api/notifications", (req, res) => {
+    const notifications = [
+        { breed: "Holland Lop" },
+        { breed: "Netherland Dwarf" },
+        { breed: "Flemish Giant" },
+    ];
+    res.json(notifications);
 });
 
 // Start the server
