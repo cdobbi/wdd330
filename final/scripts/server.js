@@ -17,17 +17,43 @@ const pusher = new Pusher({
 // Middleware to parse JSON
 app.use(express.json());
 
-// Endpoint for the organizer to send notifications
+// Endpoint to expose Pusher key and cluster
+app.get("/pusher-config", (req, res) => {
+    res.json({
+        key: process.env.PUSHER_KEY,
+        cluster: process.env.PUSHER_CLUSTER
+    });
+});
+
+// Notify endpoint
 app.post("/notify", (req, res) => {
     const { breed } = req.body;
 
-    // Trigger a Pusher event
-    pusher.trigger("table-time", "breed-notification", { breed });
+    if (!breed) {
+        return res.status(400).send("Breed is required.");
+    }
 
-    res.status(200).send("Notification sent!");
+    try {
+        pusher.trigger("table-time", "breed-notification", { breed });
+        res.status(200).send("Notification sent!");
+    } catch (error) {
+        console.error("Error triggering Pusher event:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
+});
+
+app.post("/verify-code", (req, res) => {
+    const { code } = req.body;
+
+    // Replace "12345" with your actual verification logic
+    if (code === "12345") {
+        res.json({ valid: true });
+    } else {
+        res.json({ valid: false });
+    }
 });

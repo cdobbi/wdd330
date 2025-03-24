@@ -1,10 +1,34 @@
-
-import "./pusherNotifications.js";
-
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const breedOptionsContainer = document.getElementById("breed-options");
     const saveEntriesButton = document.getElementById("save-entries");
-    const returnToLoginButton = document.getElementById("return-to-login");
+
+    // Fetch Pusher configuration from the server
+    const pusherConfig = await fetch("/pusher-config")
+        .then((response) => response.json())
+        .catch((error) => {
+            console.error("Error fetching Pusher configuration:", error);
+            return null;
+        });
+
+    if (!pusherConfig) {
+        alert("Failed to load Pusher configuration. Notifications will not work.");
+        return;
+    }
+
+    // Initialize Pusher using the fetched configuration
+    const pusher = new Pusher(pusherConfig.key, {
+        cluster: pusherConfig.cluster
+    });
+
+    // Subscribe to the "table-time" channel
+    const channel = pusher.subscribe("table-time");
+
+    // Listen for "breed-notification" events
+    channel.bind("breed-notification", (data) => {
+        alert(`Your breed (${data.breed}) is up next!`);
+        const notificationSound = new Audio("sounds/alert.mp3");
+        notificationSound.play();
+    });
 
     // Fetch the data from the JSON file
     fetch("data/data.json")
@@ -71,15 +95,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Poll every 5 seconds
     setInterval(checkForNotifications, 5000);
-});
-
-const pusher = new Pusher("your_key", {
-    cluster: "your_cluster"
-});
-
-const channel = pusher.subscribe("table-time");
-channel.bind("breed-notification", (data) => {
-    alert(`Your breed (${data.breed}) is up next!`);
-    const notificationSound = new Audio("sounds/alert.mp3");
-    notificationSound.play();
 });
