@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const Pusher = require("pusher");
+const cors = require("cors"); // Add CORS middleware
 
 const app = express();
 const port = 3000;
@@ -16,6 +17,7 @@ const pusher = new Pusher({
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors()); // Enable CORS
 
 // Endpoint to expose Pusher key and cluster
 app.get("/pusher-config", (req, res) => {
@@ -42,13 +44,10 @@ app.post("/notify", (req, res) => {
     }
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
+// Verify Code Endpoint
 app.post("/verify-code", (req, res) => {
     const { code } = req.body;
+    console.log("Received code:", code); // Debugging log
 
     // Replace "12345" with your actual verification logic
     if (code === "12345") {
@@ -56,4 +55,9 @@ app.post("/verify-code", (req, res) => {
     } else {
         res.json({ valid: false });
     }
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
