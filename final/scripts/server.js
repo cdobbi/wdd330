@@ -19,6 +19,9 @@ const pusher = new Pusher({
 app.use(express.json());
 app.use(cors()); // Enable CORS
 
+// Serve static files
+app.use(express.static("c:/Users/UtahH/OneDrive - BYU-Idaho/School/wdd330"));
+
 // Endpoint to expose Pusher key and cluster
 app.get("/pusher-config", (req, res) => {
     res.json({
