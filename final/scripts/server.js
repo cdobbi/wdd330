@@ -1,7 +1,7 @@
 require("dotenv").config();
-const express = require("express");
-const Pusher = require("pusher");
-const cors = require("cors");
+import express, { json } from "express";
+import Pusher from "pusher";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
@@ -16,7 +16,7 @@ const pusher = new Pusher({
 });
 
 // Middleware
-app.use(express.json());
+app.use(json());
 app.use(cors());
 
 // Verify Code Endpoint
