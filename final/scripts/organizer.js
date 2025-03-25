@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const notificationSound = new Audio("../sounds/alert.mp3"); // Corrected path
 
     // Fetch Rabbit Breeds from data.json
-    fetch("../data/data.json") // Correct path to data.json
+    fetch("final/data/data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Failed to fetch rabbit breeds.");
