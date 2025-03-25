@@ -1,10 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     const lineupContainer = document.getElementById("lineup-container");
-    if (!lineupContainer) {
-        console.error("Error: lineup-container element not found in the DOM.");
-        return; // Exit the script if the element is missing
-    }
-
     const printButton = document.getElementById("print");
 
     // Check if localStorage is available
@@ -13,12 +8,20 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    // Check if lineupContainer exists
+    if (!lineupContainer) {
+        console.error("Error: lineup-container element not found in the DOM.");
+        return; // Exit the script if the element is missing
+    }
+
     // Retrieve the lineup data from localStorage
     const showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
 
     // Function to display the lineup
     function displayLineup() {
-        lineupContainer.innerHTML = "";
+        lineupContainer.innerHTML = ""; // Clear the container
+
+        // Iterate through categories and shows
         Object.keys(showLineups).forEach((category) => {
             Object.keys(showLineups[category]).forEach((show) => {
                 const lineup = showLineups[category][show];
@@ -71,8 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Display the lineup on page load
     displayLineup();
 
-    // Print button functionality
-    printButton.addEventListener("click", function () {
-        window.print();
-    });
+    // Check if printButton exists before adding event listener
+    if (printButton) {
+        printButton.addEventListener("click", function () {
+            window.print();
+        });
+    } else {
+        console.warn("Warning: print button not found in the DOM.");
+    }
 });
