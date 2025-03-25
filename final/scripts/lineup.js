@@ -1,87 +1,62 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const saveLineupButton = document.getElementById("save-lineup");
-    const printLineupButton = document.getElementById("print-lineup");
-    const clearLineupButton = document.getElementById("clear-lineup");
-    const finishedButton = document.getElementById("finished");
+    const lineupContainer = document.getElementById("lineup-container");
 
-    if (typeof localStorage === "undefined") {
-        console.error("localStorage is not available.");
+    if (!lineupContainer) {
+        console.error("Error: lineup-container element not found.");
         return;
     }
 
-    let showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
+    const showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
 
-    // Save Lineup
-    saveLineupButton.addEventListener("click", function () {
-        const selectedBreeds = Array.from(
-            document.querySelectorAll("#breed-options input[type=checkbox]:checked")
-        ).map((checkbox) => checkbox.value);
+    // Display the lineups
+    function displayLineups() {
+        lineupContainer.innerHTML = ""; // Clear the container
 
-        const selectedCategory = document.getElementById("category").value;
-        const selectedShow = document.getElementById("show").value;
+        Object.keys(showLineups).forEach((category) => {
+            Object.keys(showLineups[category]).forEach((show) => {
+                const lineup = showLineups[category][show];
+                const showDiv = document.createElement("div");
+                showDiv.classList.add("lineup");
 
-        if (!selectedCategory || !selectedShow || selectedBreeds.length === 0) {
-            alert("Please select a category, show, and at least one breed.");
-            return;
-        }
+                const showTitle = document.createElement("h3");
+                showTitle.textContent = `Category: ${category} - Show: ${show}`;
+                showDiv.appendChild(showTitle);
 
-        if (!showLineups[selectedCategory]) {
-            showLineups[selectedCategory] = {};
-        }
+                const breedList = document.createElement("ul");
 
-        showLineups[selectedCategory][selectedShow] = {
-            category: selectedCategory,
-            breeds: selectedBreeds,
-        };
+                lineup.breeds.forEach((breed) => {
+                    const breedItem = document.createElement("li");
+                    breedItem.textContent = breed;
+                    breedItem.classList.add("breed-item");
 
-        localStorage.setItem("showLineups", JSON.stringify(showLineups));
-        alert(
-            `Lineup for Show ${selectedShow} in ${selectedCategory} category saved.`
-        );
-    });
+                    // Add click event to send notification
+                    breedItem.addEventListener("click", async () => {
+                        const confirmMessage = `Send notification for breed: ${breed}?`;
+                        if (confirm(confirmMessage)) {
+                            try {
+                                const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ breed }),
+                                });
+                                const data = await response.json();
+                                alert(`Notification sent for breed: ${breed}`);
+                            } catch (error) {
+                                console.error("Error sending notification:", error);
+                                alert("Failed to send notification. Please try again.");
+                            }
+                        }
+                    });
 
-    // Print Lineups
-    printLineupButton.addEventListener("click", function () {
-        if (Object.keys(showLineups).length === 0) {
-            alert("No lineups to print.");
-            return;
-        }
+                    breedList.appendChild(breedItem);
+                });
 
-        const lineupData = Object.keys(showLineups)
-            .map((category) =>
-                Object.keys(showLineups[category])
-                    .map((show) => {
-                        const lineup = showLineups[category][show];
-                        return `Category: ${category}\nShow: ${show}\nBreeds:\n${lineup.breeds
-                            .map((breed, index) => `${index + 1}. ${breed}`)
-                            .join("\n")}`;
-                    })
-                    .join("\n\n")
-            )
-            .join("\n\n");
+                showDiv.appendChild(breedList);
+                lineupContainer.appendChild(showDiv);
+            });
+        });
+    }
 
-        const newWindow = window.open("", "", "width=600,height=400");
-        newWindow.document.write(`<pre>${lineupData}</pre>`);
-        newWindow.print();
-        newWindow.close();
-    });
-
-    // Clear Lineups
-    clearLineupButton.addEventListener("click", function () {
-        showLineups = {};
-        localStorage.removeItem("showLineups");
-        alert("All lineups cleared.");
-    });
-
-    // Finished Button
-    finishedButton.addEventListener("click", function () {
-        if (Object.keys(showLineups).length === 0) {
-            alert("No lineups to save.");
-            return;
-        }
-
-        localStorage.setItem("showLineups", JSON.stringify(showLineups));
-        alert("All lineups saved. Redirecting to lineup page.");
-        window.location.href = "lineup.html";
-    });
+    // Display the lineups on page load
+    displayLineups();
 });

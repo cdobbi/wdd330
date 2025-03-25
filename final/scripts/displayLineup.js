@@ -1,17 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const lineupContainer = document.getElementById("lineup-container");
-    const printButton = document.getElementById("print");
-
-    // Check if localStorage is available
-    if (typeof localStorage === "undefined") {
-        console.error("localStorage is not available.");
-        return;
-    }
 
     // Check if lineupContainer exists
     if (!lineupContainer) {
         console.error("Error: lineup-container element not found in the DOM.");
-        return; // Exit the script if the element is missing
+        return;
     }
 
     // Retrieve the lineup data from localStorage
@@ -45,11 +38,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkbox.setAttribute("aria-label", `Send alert for ${breed}`);
 
                     // Add event listener to the checkbox
-                    checkbox.addEventListener("click", function () {
+                    checkbox.addEventListener("click", async function () {
                         const confirmMessage = `Are you sure you want to send an alert for:\nCategory: ${category}\nShow: ${show}\nBreed: ${breed}?`;
                         if (confirm(confirmMessage)) {
-                            alert(`Alert sent for:\nCategory: ${category}\nShow: ${show}\nBreed: ${breed}`);
-                            console.log(`Notification sent for breed: ${breed}`);
+                            try {
+                                const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ breed }),
+                                });
+                                const data = await response.json();
+                                alert(`Notification sent for breed: ${breed}`);
+                                console.log(`Notification sent for breed: ${breed}`);
+                            } catch (error) {
+                                console.error("Error sending notification:", error);
+                                alert("An error occurred while sending the notification. Please try again.");
+                            }
                         } else {
                             checkbox.checked = false; // Uncheck the checkbox if the user cancels
                         }
@@ -73,13 +77,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Display the lineup on page load
     displayLineup();
-
-    // Check if printButton exists before adding event listener
-    if (printButton) {
-        printButton.addEventListener("click", function () {
-            window.print();
-        });
-    } else {
-        console.warn("Warning: print button not found in the DOM.");
-    }
 });

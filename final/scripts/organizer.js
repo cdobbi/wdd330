@@ -2,10 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const saveShowButton = document.getElementById("save-show");
     const beginShowButton = document.getElementById("begin-show");
     const rabbitList = document.getElementById("rabbit-list");
-    const notificationSound = new Audio("../sounds/alert.mp3"); // Corrected path
 
     // Fetch Rabbit Breeds from data.json
-    fetch("final/data/data.json")
+    fetch("../data/data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Failed to fetch rabbit breeds.");
@@ -28,22 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
             // Attach event listeners to dynamically created breed buttons
             const dynamicBreedButtons = document.querySelectorAll(".breed-button");
             dynamicBreedButtons.forEach((button) => {
-                button.addEventListener("click", async () => {
+                button.addEventListener("click", () => {
                     const breed = button.dataset.breed;
-
-                    try {
-                        const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ breed }),
-                        });
-                        const data = await response.json();
-                        alert(`Notification sent for breed: ${breed}`);
-                        notificationSound.play(); // Play notification sound
-                    } catch (error) {
-                        console.error("Error sending notification:", error);
-                        alert("An error occurred while sending the notification. Please try again.");
-                    }
+                    console.log(`Breed selected for lineup: ${breed}`);
+                    // Add logic here to add the breed to the lineup
                 });
             });
         })
