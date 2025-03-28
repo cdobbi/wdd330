@@ -1,40 +1,29 @@
-const express = require('express');
-const cors = require('cors'); // Import the cors package
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import fetch from 'node-fetch';
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Enable CORS for all routes
 app.use(cors());
+app.use(express.json());
 
+// Root route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Animal Explorer API! Use /api/animals or /api/supported-animals.');
+});
+
+// Route to fetch animal data from RapidAPI
 app.get('/api/animals', async (req, res) => {
-    const animal = req.query.animal || 'Tiger';
-
-    // Mock mode: Return a hardcoded response instead of calling RapidAPI
-    if (process.env.MOCK_MODE === 'true') {
-        console.log('Mock mode enabled. Returning mock data...');
-        const mockData = [
-            {
-                Animal: 'Mock Lion',
-                AverageSpeed: '50 km/h',
-                Habitat: 'Savannah',
-                Lifespan: '12 years',
-            },
-            {
-                Animal: 'Mock Tiger',
-                AverageSpeed: '60 km/h',
-                Habitat: 'Jungle',
-                Lifespan: '15 years',
-            },
-        ];
-        return res.json(mockData);
-    }
-
-    // Actual API call
-    const apiUrl = `https://animals7.p.rapidapi.com/api/animals?animal=${animal}`;
+    const animal = req.query.animal || 'Tiger'; // Default to 'Tiger' if no query parameter is provided
 
     try {
+        const apiUrl = `https://animals7.p.rapidapi.com/api/animals?animal=${animal}`;
+        console.log(`Fetching data from: ${apiUrl}`); // Log the API URL
+
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -46,23 +35,27 @@ app.get('/api/animals', async (req, res) => {
         console.log(`RapidAPI Response Status: ${response.status}`); // Log the status code
 
         if (!response.ok) {
-            const errorData = await response.text(); // Log the error response body
-            console.error('RapidAPI Error Response:', errorData);
-            return res.status(response.status).send('Error fetching data from RapidAPI');
+            const errorData = await response.text();
+            console.error('RapidAPI Error Response:', errorData); // Log the error response body
+            return res.status(response.status).json({
+                error: 'Error fetching data from RapidAPI',
+                details: errorData,
+            });
         }
 
         const data = await response.json();
         console.log('RapidAPI Response Data:', data); // Log the response data
-
-        res.json(data);
+        res.json(data); // Return the fetched data to the frontend
     } catch (error) {
         console.error('Error fetching data from RapidAPI:', error.message); // Log the error message
-        res.status(500).send('Error fetching data from RapidAPI');
+        res.status(500).json({
+            error: 'Error fetching data from RapidAPI',
+            details: error.message,
+        });
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
+// Route to return hardcoded supported animals
 app.get('/api/supported-animals', (req, res) => {
     const supportedAnimals = [
         'Tiger',
@@ -73,7 +66,9 @@ app.get('/api/supported-animals', (req, res) => {
         'Koala',
         'Penguin',
         'Giraffe',
-        // Add more animals here
     ];
     res.json(supportedAnimals);
 });
+
+// Start the server
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
