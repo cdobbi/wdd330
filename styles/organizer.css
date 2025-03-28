@@ -91,3 +91,31 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Style the container holding the rabbit buttons */
+#rabbit-list {
+    display: flex;
+    /* Arrange items in a row */
+    flex-wrap: wrap;
+    /* Allow items to wrap onto new lines */
+    justify-content: center;
+    /* Optionally center the buttons */
+    gap: 0.5rem;
+    /* Add a small gap between buttons */
+    /* Remove any class like `w-100` that might force full width */
+}
+
+/* Adjust the style of each breed button */
+.breed-button {
+    white-space: nowrap;
+    /* Prevent text inside a button from wrapping */
+    flex: 0 0 auto;
+    /* Let the button take only the space of its content */
+    min-height: 40px;
+    /* Maintain your desired height */
+    padding: 0.375rem 0.75rem;
+    /* Adjust padding for better touch targets */
+    font-size: 0.875rem;
+    /* Fine-tune font-size, if needed */
+    /* Remove any width rules that force block-level sizing */
+}

@@ -16,7 +16,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Entry Styles */
 .entry {
     border: 1px solid #ccc;
     padding: 10px;
@@ -34,7 +33,6 @@ h1 {
     margin-left: 10px;
 }
 
-/* Button Styles */
 button {
     display: block;
     margin: 10px auto;
@@ -64,16 +62,13 @@ button:hover {
 /* Header Styles */
 h1.bg-secondary {
     background-color: #6c757d;
-    /* Bootstrap secondary color */
     color: white;
     padding: 10px;
     border-radius: 5px;
 }
 
-/* Footer Styles */
 footer.bg-primary {
     background-color: #f59b25;
-    /* Custom primary color */
     color: black;
     text-align: center;
     width: 100%;
@@ -88,7 +83,6 @@ footer a.text-white:hover {
     text-decoration: underline;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
     h1 {
         font-size: 1.5rem;
@@ -109,7 +103,6 @@ footer a.text-white:hover {
     }
 }
 
-/* Optional Rabbit Ticker Animation */
 .rabbit-ticker {
     display: flex;
     justify-content: center;
@@ -132,20 +125,32 @@ footer a.text-white:hover {
     }
 }
 
-/* Limit the max width for desktop screens */
 .container {
     max-width: 50%;
-    /* 50% of the desktop screen width */
     margin: 0 auto;
-    /* Center the container */
     padding: 20px;
 }
 
-/* Ensure full width for smaller screens */
 @media (max-width: 768px) {
     .container {
         max-width: 100%;
-        /* Full width for mobile and tablet */
         padding: 10px;
     }
+}
+
+.breed-button {
+    min-height: 40px;
+    font-size: 0.9rem;
+}
+
+.breed-button {
+    min-height: 40px;
+    /* Adjust height as needed */
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.breed-button.active {
+    background-color: #007bff;
+    color: #fff;
 }

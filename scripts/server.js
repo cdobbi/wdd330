@@ -4,7 +4,14 @@ dotenv.config();
 import express, { json } from "express";
 import Pusher from "pusher";
 import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+// Create __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Initialize the Express app and set the port
 const app = express();
 const port = 3000;
 
@@ -24,7 +31,6 @@ app.use(cors());
 // Verify Code Endpoint
 app.post("/verify-code", (req, res) => {
     const { code } = req.body;
-
     // Replace "12345" with your actual verification logic
     if (code === "12345") {
         res.json({ valid: true });
@@ -36,11 +42,9 @@ app.post("/verify-code", (req, res) => {
 // Notify Endpoint
 app.post("/notify", (req, res) => {
     const { breed } = req.body;
-
     if (!breed) {
         return res.status(400).send("Breed is required.");
     }
-
     try {
         pusher.trigger("table-time", "breed-notification", { breed });
         res.status(200).send("Notification sent!");
@@ -50,7 +54,7 @@ app.post("/notify", (req, res) => {
     }
 });
 
-// Add this route to handle GET requests to /api/notifications
+// API Route: Notifications
 app.get("/api/notifications", (req, res) => {
     const notifications = [
         { breed: "Holland Lop" },
@@ -60,13 +64,16 @@ app.get("/api/notifications", (req, res) => {
     res.json(notifications);
 });
 
-app.use(express.static("c:/Users/UtahH/OneDrive - BYU-Idaho/School/wdd330"));
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Serve Static Files from the Project Root
+// Because server.js is in /scripts, we serve files from one level up.
+app.use(express.static(path.join(__dirname, '..')));
+
+// GET "/" Route: Explicitly serve index.html
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
-// Add this route to handle GET requests to the root URL
-app.get("/", (req, res) => {
-    res.send("Welcome to the Table Time API!");
+// Start the Server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

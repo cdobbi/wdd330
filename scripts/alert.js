@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const notificationSound = new Audio("sounds/alert.mp3"); // Ensure the file exists
+    const notificationSound = new Audio("/sounds/alert.mp3"); // Ensure the file exists
   
     async function checkForNotifications() {
         try {
-            const response = await fetch("/api/notifications"); // Use relative URL
+            const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications"); // Use relative URL
             if (!response.ok) {
                 throw new Error("Failed to fetch notifications.");
             }

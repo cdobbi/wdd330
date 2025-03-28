@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     // Fetch the data from the JSON file
-    fetch("data/data.json")
+    fetch("/data/data.json")
         .then((response) => response.json())
         .then((data) => {
             // Populate breed options as buttons
