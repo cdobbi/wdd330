@@ -1,74 +1,96 @@
-const apiUrl = "http://localhost:3000/api/animals"; // Backend server URL
+const apiUrl = "http://localhost:3000/api/supported-animals"; // Backend endpoint to fetch the list of animals
+const animalDetailsUrl = "http://localhost:3000/api/animals"; // Backend endpoint to fetch details for a specific animal
 
-// Fetch and display animals when the page loads
-document.addEventListener("DOMContentLoaded", fetchAndDisplayAnimals);
+document.addEventListener("DOMContentLoaded", fetchAndDisplayAnimalOptions);
 
-async function fetchAndDisplayAnimals() {
-    console.log("DOM fully loaded. Starting fetchAndDisplayAnimals..."); // Debug log
+async function fetchAndDisplayAnimalOptions() {
     const errorMessage = document.getElementById('error-message');
-    console.log("Error message element:", errorMessage); // Debug log
 
     try {
-        console.log("Fetching data from API:", apiUrl); // Debug log
         const response = await fetch(apiUrl);
-        console.log("API response received:", response); // Debug log
-
         if (!response.ok) {
-            console.error("API request failed with status:", response.status); // Debug log
             throw new Error(`Failed to fetch data: ${response.status}`);
         }
 
         const animals = await response.json();
-        console.log("Fetched Animals:", animals); // Debug log
+        console.log("Supported Animals:", animals); // Debug log
 
         if (!animals || !Array.isArray(animals) || animals.length === 0) {
-            console.error("No animals found in the API response."); // Debug log
             throw new Error('No animals found in the API.');
         }
 
-        console.log("Calling displayAnimalCards with animals:", animals); // Debug log
-        displayAnimalCards(animals);
+        displayAnimalOptions(animals);
     } catch (error) {
-        console.error("Error occurred in fetchAndDisplayAnimals:", error); // Debug log
+        console.error("Error:", error);
         errorMessage.classList.remove('d-none'); // Show error message
         errorMessage.textContent = error.message;
     }
 }
 
-function displayAnimalCards(animals) {
-    console.log("Starting displayAnimalCards..."); // Debug log
+function displayAnimalOptions(animals) {
     const container = document.getElementById('animal-cards-container');
-    console.log("Animal Cards Container:", container); // Debug log
-
-    if (!container) {
-        console.error("Animal cards container not found in the DOM."); // Debug log
-        return;
-    }
-
     container.innerHTML = ""; // Clear any existing content
-    console.log("Cleared existing content in the container."); // Debug log
 
-    animals.forEach((animal, index) => {
-        console.log(`Processing animal at index ${index}:`, animal); // Debug log
+    animals.forEach((animal) => {
         const card = document.createElement('div');
         card.className = "col-md-4"; // Bootstrap grid column for responsive layout
 
         card.innerHTML = `
-            <div class="card h-100">
+            <div class="card h-100 clickable-card" data-animal="${animal}">
                 <div class="card-body">
-                    <h5 class="card-title">${animal.Animal || "Unknown Animal"}</h5>
-                    <p class="card-text"><strong>Habitat:</strong> ${animal.Habitat || "Unknown"}</p>
-                    <p class="card-text"><strong>Lifespan:</strong> ${animal["Lifespan (years)"] || "Unknown"} years</p>
-                    <p class="card-text"><strong>Diet:</strong> ${animal.Diet || "Unknown"}</p>
-                    <p class="card-text"><strong>Top Speed:</strong> ${animal["Top Speed (km/h)"] || "Unknown"} km/h</p>
+                    <h5 class="card-title">${animal}</h5>
                 </div>
             </div>
         `;
 
-        console.log("Generated card HTML:", card.innerHTML); // Debug log
+        card.addEventListener('click', () => fetchAndDisplayAnimalDetails(animal)); // Add click event to fetch details
         container.appendChild(card);
-        console.log("Appended card to container."); // Debug log
     });
+}
 
-    console.log("Finished displayAnimalCards."); // Debug log
+async function fetchAndDisplayAnimalDetails(animal) {
+    const errorMessage = document.getElementById('error-message');
+
+    try {
+        const response = await fetch(`${animalDetailsUrl}?animal=${animal}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.status}`);
+        }
+
+        const animalDetails = await response.json();
+        console.log("Animal Details:", animalDetails); // Debug log
+
+        displayAnimalDetails(animalDetails);
+    } catch (error) {
+        console.error("Error:", error);
+        errorMessage.classList.remove('d-none'); // Show error message
+        errorMessage.textContent = error.message;
+    }
+}
+
+function displayAnimalDetails(animalDetails) {
+    const container = document.getElementById('animal-cards-container');
+    container.innerHTML = ""; // Clear the container to display details
+
+    animalDetails.forEach((detail) => {
+        const card = document.createElement('div');
+        card.className = "col-md-4";
+
+        const imageUrl = detail.Image || "https://via.placeholder.com/150"; // Placeholder if no image is available
+
+        card.innerHTML = `
+            <div class="card h-100">
+                <img src="${imageUrl}" class="card-img-top" alt="${detail.Animal || "Animal"}">
+                <div class="card-body">
+                    <h5 class="card-title">${detail.Animal || "Unknown Animal"}</h5>
+                    <p class="card-text"><strong>Habitat:</strong> ${detail.Habitat || "Unknown"}</p>
+                    <p class="card-text"><strong>Lifespan:</strong> ${detail["Lifespan (years)"] || "Unknown"} years</p>
+                    <p class="card-text"><strong>Diet:</strong> ${detail.Diet || "Unknown"}</p>
+                    <p class="card-text"><strong>Top Speed:</strong> ${detail["Top Speed (km/h)"] || "Unknown"} km/h</p>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
 }
