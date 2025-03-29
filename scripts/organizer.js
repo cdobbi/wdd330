@@ -64,47 +64,50 @@ styleActionButton(printLineupButton);
 styleActionButton(clearLineupButton);
 styleActionButton(finishedButton);
 
-// Save Lineup: Capture current lineup selections (category, show, breeds)
+// Save Lineup: Capture current lineup selections (category, show, and selected breeds)
 // and store them into localStorage.
 if (saveLineupButton) {
-  saveLineupButton.addEventListener("click", () => {
-    const categoryEl = document.getElementById("category");
-    const showEl = document.getElementById("show");
-    const category = categoryEl ? categoryEl.value : "";
-    const show = showEl ? showEl.value : "";
+    saveLineupButton.addEventListener("click", () => {
+        // Get the selected values from the dropdowns (ensure your HTML has these elements)
+        const categoryEl = document.getElementById("category");
+        const showEl = document.getElementById("show");
+        const category = categoryEl ? categoryEl.value : "";
+        const show = showEl ? showEl.value : "";
 
-    // Gather selected breeds from breed buttons that have been toggled active.
-    const selectedBreeds = Array.from(document.querySelectorAll(".breed-button.active")).map(
-      (btn) => btn.dataset.breed
-    );
+        // Gather selected breeds from buttons by checking for the "active" class.
+        const selectedBreeds = Array.from(document.querySelectorAll(".breed-button.active")).map(
+            (btn) => btn.dataset.breed
+        );
 
-    if (!category || !show || selectedBreeds.length === 0) {
-      alert("Please select a category, show, and at least one breed.");
-      return;
-    }
+        // Verify that a category, show, and at least one breed have been selected.
+        if (!category || !show || selectedBreeds.length === 0) {
+            alert("Please select a category, show, and at least one breed.");
+            return;
+        }
 
-    // Retrieve any previously saved lineups (stored as an array) from localStorage.
-    let savedLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
-    // Create a new lineup object.
-    const newLineup = {
-      category: category,
-      show: show,
-      breeds: selectedBreeds
-    };
-    // Append the new lineup to the array.
-    savedLineups.push(newLineup);
-    localStorage.setItem("showLineups", JSON.stringify(savedLineups));
+        // Retrieve previously saved lineups from localStorage (stored as an array); default to an empty array if none.
+        let savedLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
+        // Create a new lineup object.
+        const newLineup = {
+            category: category,
+            show: show,
+            breeds: selectedBreeds
+        };
+        // Append the new lineup and update localStorage.
+        savedLineups.push(newLineup);
+        localStorage.setItem("showLineups", JSON.stringify(savedLineups));
 
-    alert(
-      `Lineup saved!\nCategory: ${category}\nShow: ${show}\nBreeds: ${selectedBreeds.join(
-        ", "
-      )}\n\nChoose your next lineup or click Finished/Print.`
-    );
+        alert(
+            `Lineup saved!\nCategory: ${category}\nShow: ${show}\nBreeds: ${selectedBreeds.join(
+                ", "
+            )}\n\nPress Finished when done or save another lineup.`
+        );
 
-    // Clear current selections so the organizer can start a fresh lineup.
-    document.querySelectorAll(".breed-button.active").forEach((btn) => btn.classList.remove("active"));
-  });
+        // Notice: We are NOT clearing the active selections here.
+        // This allows the organizer to see the current configuration even after saving.
+    });
 }
+
 
 // Print Lineup: Instead of printing the full HTML page with buttons,
 // we generate a plain-text preview and pass it off to a new window for printing.
@@ -141,18 +144,26 @@ if (printLineupButton) {
   });
 }
 
-// Clear Lineup: Clear only current selections (do not erase saved lineups).
+// Clear Lineup: Clear current selections and remove all saved lineups.
 if (clearLineupButton) {
-  clearLineupButton.addEventListener("click", () => {
-    document.querySelectorAll(".breed-button.active").forEach((btn) => btn.classList.remove("active"));
-    // Optionally, reset the category and show dropdowns:
-    const categoryEl = document.getElementById("category");
-    const showEl = document.getElementById("show");
-    if (categoryEl) categoryEl.selectedIndex = 0;
-    if (showEl) showEl.selectedIndex = 0;
-    alert("Current selections cleared. You can start over.");
-  });
-}
+    clearLineupButton.addEventListener("click", () => {
+      // Remove the "active" class from all breed buttons.
+      document.querySelectorAll(".breed-button.active").forEach((btn) => btn.classList.remove("active"));
+      
+      // Reset the dropdowns for category and show, if they exist.
+      const categoryEl = document.getElementById("category");
+      const showEl = document.getElementById("show");
+      if (categoryEl) categoryEl.selectedIndex = 0;
+      if (showEl) showEl.selectedIndex = 0;
+      
+      // Clear the saved lineups from localStorage by setting it to an empty array.
+      localStorage.setItem("showLineups", JSON.stringify([]));
+      
+      alert("All saved lineups and current selections have been cleared. You can start over.");
+    });
+  }
+  
+
 
 // Finished: Redirect to the lineup.html page to display all saved lineups.
 if (finishedButton) {
