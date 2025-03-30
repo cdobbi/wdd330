@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+// alert.js
+
+document.addEventListener("DOMContentLoaded", function () {    
     const notificationSound = new Audio("/sounds/alert.mp3"); // Ensure the file exists
   
     async function checkForNotifications() {

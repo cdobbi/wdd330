@@ -7,79 +7,66 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Retrieve the lineup data from localStorage
-    const showLineups = JSON.parse(localStorage.getItem("showLineups")) || {};
+    // Retrieve the lineup data from localStorage (flat array structure)
+    const showLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
 
     // Function to display the lineup
     function displayLineup() {
         lineupContainer.innerHTML = ""; // Clear the container
 
-        // Iterate through categories and shows
-        Object.keys(showLineups).forEach((category) => {
-            Object.keys(showLineups[category]).forEach((show) => {
-                const lineup = showLineups[category][show];
-                const showDiv = document.createElement("div");
-                showDiv.classList.add("col-12", "mb-4");
+        if (showLineups.length === 0) {
+            lineupContainer.innerHTML = "<p class='text-muted'>No lineups saved.</p>";
+            return;
+        }
 
-                const showTitle = document.createElement("h3");
-                showTitle.textContent = `Category: ${category} - Show: ${show}`;
-                showDiv.appendChild(showTitle);
+        // Iterate through saved lineups and render each one
+        showLineups.forEach((lineup, index) => {
+            const showDiv = document.createElement("div");
+            showDiv.classList.add("col-12", "mb-4");
 
-                const breedList = document.createElement("ul");
-                breedList.style.listStyleType = "none"; // Remove default list styling
+            // Display the lineup title (category and show)
+            const showTitle = document.createElement("h3");
+            showTitle.textContent = `Lineup ${index + 1}: Category: ${lineup.category} - Show: ${lineup.show}`;
+            showDiv.appendChild(showTitle);
 
-                lineup.breeds.forEach((breed, index) => {
-                    const breedItem = document.createElement("li");
-                    breedItem.classList.add("form-check", "d-flex", "align-items-center", "mb-2");
+            // Create a breed list
+            const breedList = document.createElement("ul");
+            breedList.style.listStyleType = "none";
 
-                    const checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.classList.add("form-check-input");
-                    checkbox.id = `breed-${category}-${show}-${index}`;
-                    checkbox.setAttribute("aria-label", `Send alert for ${breed}`);
-                    // Inline style to make the checkbox larger
-                    checkbox.style.width = "44px";
-                    checkbox.style.height = "44px";
-                    checkbox.style.marginRight = "15px";
+            lineup.breeds.forEach((breed, breedIndex) => {
+                const breedItem = document.createElement("li");
+                breedItem.classList.add("form-check", "d-flex", "align-items-center", "mb-2");
 
-                    // Add event listener to the checkbox
-                    checkbox.addEventListener("click", async function () {
-                        if (checkbox.checked) {
-                            const confirmMessage = `Are you sure you want to send an alert for:\nCategory: ${category}\nShow: ${show}\nBreed: ${breed}?`;
-                            if (confirm(confirmMessage)) {
-                                try {
-                                    const response = await fetch("showLineups", {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify({ breed }),
-                                    });
-                                    const data = await response.json();
-                                    alert(`Notification sent for breed: ${breed}`);
-                                    console.log(`Notification sent for breed: ${breed}`);
-                                } catch (error) {
-                                    console.error("Error sending notification:", error);
-                                    alert("An error occurred while sending the notification. Please try again.");
-                                }
-                            } else {
-                                checkbox.checked = false; // Uncheck the checkbox if the user cancels
-                            }
-                        }
-                    });
+                // Checkbox for each breed
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.classList.add("form-check-input");
+                checkbox.id = `breed-${index}-${breedIndex}`;
+                checkbox.style.width = "44px";
+                checkbox.style.height = "44px";
+                checkbox.style.marginRight = "15px";
 
-                    const label = document.createElement("label");
-                    label.classList.add("form-check-label");
-                    label.htmlFor = checkbox.id;
-                    label.textContent = breed;
-                    label.style.fontSize = "20px"; // Larger font for better visibility
-
-                    breedItem.appendChild(checkbox);
-                    breedItem.appendChild(label);
-                    breedList.appendChild(breedItem);
+                // Notification when checkbox is clicked
+                checkbox.addEventListener("click", () => {
+                    if (checkbox.checked) {
+                        alert(`Take your ${breed} to the judges table. Good luck!`);
+                    }
                 });
 
-                showDiv.appendChild(breedList);
-                lineupContainer.appendChild(showDiv);
+                // Breed label
+                const label = document.createElement("label");
+                label.classList.add("form-check-label");
+                label.htmlFor = checkbox.id;
+                label.textContent = breed;
+                label.style.fontSize = "20px";
+
+                breedItem.appendChild(checkbox);
+                breedItem.appendChild(label);
+                breedList.appendChild(breedItem);
             });
+
+            showDiv.appendChild(breedList);
+            lineupContainer.appendChild(showDiv);
         });
     }
 
