@@ -82,7 +82,6 @@ app.get("/pusher-config", (req, res) => {
     });
 });
 
-// Start the Server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });

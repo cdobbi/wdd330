@@ -1,31 +1,27 @@
-// alert.js
+document.addEventListener("DOMContentLoaded", function () {
+    const notificationSound = new Audio("/sounds/alert.mp3");
+    const displayedNotifications = new Set();
 
-document.addEventListener("DOMContentLoaded", function () {    
-    const notificationSound = new Audio("/sounds/alert.mp3"); // Ensure the file exists
-  
     async function checkForNotifications() {
+        const exhibitorEntries = JSON.parse(localStorage.getItem("exhibitorEntries"));
+        if (!exhibitorEntries || !exhibitorEntries.breeds) {
+            console.warn("No exhibitor entries found.");
+            return;
+        }
+
         try {
-            const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications"); // Use relative URL
+            const response = await fetch("https://wdd330-owtb.onrender.com/api/notifications");
             if (!response.ok) {
                 throw new Error("Failed to fetch notifications.");
             }
-  
+
             const notifications = await response.json();
-            const exhibitorEntries = JSON.parse(
-                localStorage.getItem("exhibitorEntries")
-            );
-  
-            if (!exhibitorEntries || !exhibitorEntries.breeds) {
-                console.warn("No exhibitor entries found.");
-                return;
-            }
-  
             notifications.forEach((notification) => {
-                if (exhibitorEntries.breeds.includes(notification.breed)) {
-                    // Play notification sound
+                if (!displayedNotifications.has(notification.breed) && exhibitorEntries.breeds.includes(notification.breed)) {
+                    displayedNotifications.add(notification.breed);
+
+                    // Play sound and show notification
                     notificationSound.play();
-  
-                    // Show browser notification (if supported)
                     if ("Notification" in window) {
                         Notification.requestPermission().then((permission) => {
                             if (permission === "granted") {
@@ -35,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     } else {
-                        // Fallback for unsupported browsers
                         alert(`Your breed (${notification.breed}) is up next!`);
                     }
                 }
@@ -44,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error fetching notifications:", error);
         }
     }
-      // Poll the backend every 15 seconds (adjust for production)
-    setInterval(checkForNotifications, 15000);
+
+    // Poll the backend every 30 seconds (adjust interval as needed)
+    setInterval(checkForNotifications, 30000);
 });
