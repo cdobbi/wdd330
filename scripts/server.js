@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
+console.log("Pusher Key:", process.env.PUSHER_KEY);
+
 
 import express, { json } from "express";
 import Pusher from "pusher";

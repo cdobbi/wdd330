@@ -3,17 +3,15 @@ console.log("Starting displayLineup.js...");
 document.addEventListener("DOMContentLoaded", function () {
     // Verify lineup-container exists
     const lineupContainer = document.getElementById("lineup-container");
-    
+
     if (!lineupContainer) {
         console.error("lineup-container element not found in the DOM.");
         return; // Stop execution if lineup-container is missing
     }
 
-    // Retrieve the saved show lineups
     const showLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
     console.log("Retrieved lineups from localStorage:", showLineups);
 
-    // Check if there are any lineups to display
     if (showLineups.length === 0) {
         lineupContainer.innerHTML = "<p class='text-muted'>No lineups saved.</p>";
         console.warn("No lineups found in localStorage.");
@@ -37,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const breedItem = document.createElement("li");
             breedItem.classList.add("form-check", "d-flex", "align-items-center", "mb-2");
 
-            // Create a checkbox for each breed
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.classList.add("form-check-input");
