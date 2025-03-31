@@ -1,6 +1,7 @@
-// Fetch Pusher configuration from the server
+// Fetch Pusher configuration from the server and initialize Pusher
 async function initializePusher() {
     try {
+        // Fetch Pusher configuration from the server
         const response = await fetch("/pusher-config");
         if (!response.ok) {
             throw new Error("Failed to fetch Pusher configuration.");
@@ -10,7 +11,7 @@ async function initializePusher() {
 
         // Initialize Pusher using the fetched configuration
         const pusher = new Pusher(pusherConfig.key, {
-            cluster: pusherConfig.cluster
+            cluster: pusherConfig.cluster,
         });
 
         // Subscribe to the "table-time" channel
@@ -18,9 +19,8 @@ async function initializePusher() {
 
         // Listen for "breed-notification" events
         channel.bind("breed-notification", (data) => {
-            alert(`Your breed (${data.breed}) is up next!`);
-            const notificationSound = new Audio("sounds/alert.mp3");
-            notificationSound.play();
+            // Trigger mobile-friendly notifications
+            handleNotification(data.breed);
         });
 
         return { pusher, channel };
@@ -28,6 +28,50 @@ async function initializePusher() {
         console.error("Error initializing Pusher:", error);
         return null;
     }
+}
+
+// Handle incoming notifications with sound and polished notifications
+function handleNotification(breed) {
+    // Play notification sound
+    const notificationSound = new Audio("/sounds/alert.mp3");
+    notificationSound.play();
+
+    // Use Browser Notification API if supported
+    if ("Notification" in window) {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                new Notification("Table-Time Alert", {
+                    body: `Your breed (${breed}) is up next!`,
+                    icon: "/images/notification-icon.png", // Optional: add an icon for a polished look
+                });
+            } else {
+                console.warn("Notifications permission denied. Falling back to UI alert.");
+                updateNotificationArea(breed);
+            }
+        });
+    } else {
+        // Fall back to updating the UI if browser notifications are unsupported
+        updateNotificationArea(breed);
+    }
+}
+
+// Dynamically update the UI to display the notification
+function updateNotificationArea(breed) {
+    const notificationArea = document.getElementById("notification-area");
+
+    if (!notificationArea) {
+        console.error("Notification area element not found in the DOM.");
+        return;
+    }
+
+    // Display the notification message in the UI
+    notificationArea.textContent = `Your breed (${breed}) is up next!`;
+    notificationArea.style.display = "block";
+
+    // Auto-hide the notification after 10 seconds
+    setTimeout(() => {
+        notificationArea.style.display = "none";
+    }, 10000);
 }
 
 // Export the initialization function

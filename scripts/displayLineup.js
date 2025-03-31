@@ -1,75 +1,88 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const lineupContainer = document.getElementById("lineup-container");
+console.log("Starting displayLineup.js...");
 
-    // Check if lineupContainer exists
+document.addEventListener("DOMContentLoaded", function () {
+    // Verify lineup-container exists
+    const lineupContainer = document.getElementById("lineup-container");
+    
     if (!lineupContainer) {
-        console.error("Error: lineup-container element not found in the DOM.");
+        console.error("lineup-container element not found in the DOM.");
+        return; // Stop execution if lineup-container is missing
+    }
+
+    // Retrieve the saved show lineups
+    const showLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
+    console.log("Retrieved lineups from localStorage:", showLineups);
+
+    // Check if there are any lineups to display
+    if (showLineups.length === 0) {
+        lineupContainer.innerHTML = "<p class='text-muted'>No lineups saved.</p>";
+        console.warn("No lineups found in localStorage.");
         return;
     }
 
-    // Retrieve the lineup data from localStorage (flat array structure)
-    const showLineups = JSON.parse(localStorage.getItem("showLineups")) || [];
+    // Render the lineups
+    showLineups.forEach((lineup, index) => {
+        const showDiv = document.createElement("div");
+        showDiv.classList.add("col-12", "mb-4");
 
-    // Function to display the lineup
-    function displayLineup() {
-        lineupContainer.innerHTML = ""; // Clear the container
+        const showTitle = document.createElement("h3");
+        showTitle.textContent = `Lineup ${index + 1}: Category: ${lineup.category} - Show: ${lineup.show}`;
+        showDiv.appendChild(showTitle);
 
-        if (showLineups.length === 0) {
-            lineupContainer.innerHTML = "<p class='text-muted'>No lineups saved.</p>";
-            return;
-        }
+        // Create a breed list
+        const breedList = document.createElement("ul");
+        breedList.style.listStyleType = "none";
 
-        // Iterate through saved lineups and render each one
-        showLineups.forEach((lineup, index) => {
-            const showDiv = document.createElement("div");
-            showDiv.classList.add("col-12", "mb-4");
+        lineup.breeds.forEach((breed, breedIndex) => {
+            const breedItem = document.createElement("li");
+            breedItem.classList.add("form-check", "d-flex", "align-items-center", "mb-2");
 
-            // Display the lineup title (category and show)
-            const showTitle = document.createElement("h3");
-            showTitle.textContent = `Lineup ${index + 1}: Category: ${lineup.category} - Show: ${lineup.show}`;
-            showDiv.appendChild(showTitle);
+            // Create a checkbox for each breed
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("form-check-input");
+            checkbox.style.width = "44px";
+            checkbox.style.height = "44px";
+            checkbox.style.marginRight = "15px";
 
-            // Create a breed list
-            const breedList = document.createElement("ul");
-            breedList.style.listStyleType = "none";
+            // Add checkbox click functionality for notifications
+            checkbox.addEventListener("click", async () => {
+                if (checkbox.checked) {
+                    try {
+                        const payload = {
+                            breed,
+                            category: lineup.category,
+                            show: lineup.show,
+                        };
+                        const response = await fetch("/notify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload),
+                        });
 
-            lineup.breeds.forEach((breed, breedIndex) => {
-                const breedItem = document.createElement("li");
-                breedItem.classList.add("form-check", "d-flex", "align-items-center", "mb-2");
-
-                // Checkbox for each breed
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.classList.add("form-check-input");
-                checkbox.id = `breed-${index}-${breedIndex}`;
-                checkbox.style.width = "44px";
-                checkbox.style.height = "44px";
-                checkbox.style.marginRight = "15px";
-
-                // Notification when checkbox is clicked
-                checkbox.addEventListener("click", () => {
-                    if (checkbox.checked) {
-                        alert(`Take your ${breed} to the judges table. Good luck!`);
+                        if (response.ok) {
+                            console.log(`Notification sent for breed: ${breed}`);
+                        } else {
+                            console.error(`Failed to send notification: ${response.statusText}`);
+                        }
+                    } catch (error) {
+                        console.error(`Error sending notification for breed: ${breed}`, error);
                     }
-                });
-
-                // Breed label
-                const label = document.createElement("label");
-                label.classList.add("form-check-label");
-                label.htmlFor = checkbox.id;
-                label.textContent = breed;
-                label.style.fontSize = "20px";
-
-                breedItem.appendChild(checkbox);
-                breedItem.appendChild(label);
-                breedList.appendChild(breedItem);
+                }
             });
 
-            showDiv.appendChild(breedList);
-            lineupContainer.appendChild(showDiv);
-        });
-    }
+            const label = document.createElement("label");
+            label.textContent = breed;
+            label.style.fontSize = "20px";
 
-    // Display the lineup on page load
-    displayLineup();
+            breedItem.appendChild(checkbox);
+            breedItem.appendChild(label);
+            breedList.appendChild(breedItem);
+        });
+
+        showDiv.appendChild(breedList);
+        lineupContainer.appendChild(showDiv);
+    });
+
+    console.log("Lineups rendered successfully!");
 });
