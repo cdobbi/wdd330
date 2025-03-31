@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-console.log("Pusher Key:", process.env.PUSHER_KEY);
-
+console.log("Pusher Key:", process.env.key); // Matches your .env variable
 
 import express, { json } from "express";
 import Pusher from "pusher";
@@ -19,10 +18,10 @@ const port = 3000;
 
 // Configure Pusher
 const pusher = new Pusher({
-    appId: process.env.PUSHER_APP_ID,
-    key: process.env.PUSHER_KEY,
-    secret: process.env.PUSHER_SECRET,
-    cluster: process.env.PUSHER_CLUSTER,
+    appId: process.env.app_id,  // Matches your .env variable
+    key: process.env.key,       // Matches your .env variable
+    secret: process.env.secret, // Matches your .env variable
+    cluster: process.env.cluster, // Matches your .env variable
     useTLS: true,
 });
 
@@ -73,6 +72,14 @@ app.use(express.static(path.join(__dirname, '..')));
 // GET "/" Route: Explicitly serve index.html
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
+// Pusher Configuration Endpoint
+app.get("/pusher-config", (req, res) => {
+    res.json({
+        key: process.env.key,        // Matches your .env variable
+        cluster: process.env.cluster, // Matches your .env variable
+    });
 });
 
 // Start the Server

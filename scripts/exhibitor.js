@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const breedOptionsContainer = document.getElementById("breed-options");
     const saveEntriesButton = document.getElementById("save-entries");
 
-    // Fetch Pusher configuration from the server
     const pusherConfig = await fetch("/pusher-config")
         .then((response) => response.json())
         .catch((error) => {
@@ -15,32 +14,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    // Initialize Pusher using the fetched configuration
     const pusher = new Pusher(pusherConfig.key, {
         cluster: pusherConfig.cluster
     });
 
-    // Subscribe to the "table-time" channel
     const channel = pusher.subscribe("table-time");
 
-    // Listen for "breed-notification" events
     channel.bind("breed-notification", (data) => {
         alert(`Your breed (${data.breed}) is up next!`);
         const notificationSound = new Audio("sounds/alert.mp3");
         notificationSound.play();
     });
 
-    // Fetch the data from the JSON file
     fetch("/data/data.json")
         .then((response) => response.json())
         .then((data) => {
-            // Populate breed options as buttons
             data.entries.forEach((entry) => {
                 const breedButton = document.createElement("button");
                 breedButton.className = "breed-button";
                 breedButton.textContent = entry.breed;
 
-                // Add click event to toggle selection
                 breedButton.addEventListener("click", function (event) {
                     event.preventDefault(); // Prevent page reload
                     breedButton.classList.toggle("selected"); // Toggle the selected class
@@ -51,7 +44,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         .catch((error) => console.error("Error fetching data:", error));
 
-    // Event listener for the "Start Application" button
     saveEntriesButton.addEventListener("click", function () {
         const selectedBreeds = [];
         const selectedButtons = breedOptionsContainer.querySelectorAll(".breed-button.selected");
@@ -71,16 +63,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function checkForNotifications() {
         try {
-            // Mocked notifications data
             const notifications = [
                 { breed: "Holland Lop" },
                 { breed: "Netherland Dwarf" }
             ];
     
-            // Retrieve exhibitor entries from localStorage
             const exhibitorEntries = JSON.parse(localStorage.getItem("exhibitorEntries"));
     
-            // Check if any notification matches the selected breeds
             notifications.forEach((notification) => {
                 if (exhibitorEntries && exhibitorEntries.breeds.includes(notification.breed)) {
                     alert(`Your breed (${notification.breed}) is up next!`);
@@ -93,6 +82,5 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Poll every 5 seconds
     setInterval(checkForNotifications, 5000);
 });
