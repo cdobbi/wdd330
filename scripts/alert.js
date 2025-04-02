@@ -59,4 +59,3 @@ document.addEventListener("DOMContentLoaded", function () {
     // Expose notifyUser globally so other files (like exhibitor.js and displayLineup.js) can use it
     window.notifyUser = notifyUser;
   });
-  
