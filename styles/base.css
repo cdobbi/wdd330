@@ -59,7 +59,6 @@ button:hover {
     font-size: 1.1rem;
 }
 
-/* Header Styles */
 h1.bg-secondary {
     background-color: #6c757d;
     color: white;
@@ -145,7 +144,6 @@ footer a.text-white:hover {
 
 .breed-button {
     min-height: 40px;
-    /* Adjust height as needed */
     padding: 0.25rem 0.5rem;
     font-size: 0.8rem;
 }
